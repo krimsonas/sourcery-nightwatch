@@ -1,6 +1,6 @@
 {
   "name": "sourcery-nightwatch",
-  "version": "1",
+  "version": "1.0.0",
   "description": "Repository used for learning purpose during Sourcery for testers @ Devbridge.",
   "main": "",
   "engines": {
