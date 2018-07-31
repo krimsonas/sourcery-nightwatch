@@ -10,8 +10,9 @@
 
 ### 2. Install
 
-1. In cmd (comand line/terminal (Click [Windows Key] keyboard key and type "cmd")) navigate to the repository path selected in _part 1_
-2. Run "npm install" command
+1. (Prerequisites) <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK</a> and <a href="https://nodejs.org/en/download/">NodeJS</a> 
+2. In cmd (comand line/terminal (Click [Windows Key] keyboard key and type "cmd")) navigate to the repository path selected in _part 1_
+3. Run "npm install" command
 
 ### 3. Run tests
 
