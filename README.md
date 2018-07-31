@@ -22,5 +22,5 @@ Run the Nightwatch tests:
 3. It will fail at first, because of missing credentials
 4. Navigate to repository path in File Explorer
 5. Open [libs] folder
-6. Edit [credentials.js] file
+6. Edit [credentials.js] file (only available after first attempt)
 7. Enter credentails used to login to Sourcery For Testers application under test
