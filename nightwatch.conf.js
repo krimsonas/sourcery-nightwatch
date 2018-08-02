@@ -29,7 +29,7 @@ module.exports = {
         "path": './screenshots'
       },
       "globals": {
-        "waitForConditionTimeout": 1000
+        "waitForConditionTimeout": 5000
       },
       "desiredCapabilities": {
         "browserName": "chrome",
