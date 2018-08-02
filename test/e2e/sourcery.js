@@ -1,5 +1,3 @@
-var conf = require('../../nightwatch.conf.js');
-
 module.exports = {
     'Login to sourcebooks': function (browser) {
         browser
@@ -23,8 +21,8 @@ module.exports = {
                 .waitForElementVisible('.user-info__title');
             }
         });
-        browser.assert.containsText('.user-info__title', 'Demo User') // assert body contains text
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
+        browser.assert.containsText('.user-info__title', 'Memo User') // assert body contains text
+            .saveScreenshot('./screenshots/Demo.png')
             .end();
     }
 };
