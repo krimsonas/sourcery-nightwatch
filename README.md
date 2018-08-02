@@ -16,12 +16,11 @@
 
 ### 3. Run tests
 
-Run the Nightwatch tests:
-
 1. In cmd navigate to the repository path selected in _part 1_ (not required if just completed _part 2_)
 2. Run "npm test" command
 3. It will fail at first, because of missing credentials
 4. Navigate to repository path in File Explorer
 5. Open [libs] folder
-6. Edit [credentials.js] file (only available after first attempt)
+6. Edit [credentials.js] file (only available after first "npm test" attempt)
 7. Enter credentails used to login to Sourcery For Testers application under test
+8. Run "npm test" command again, this time it should pass all the tests
