@@ -9,9 +9,10 @@ const credentials = require("./libs/credentials");
 
 module.exports = {
   "src_folders": [
-    "test/e2e"// Where you are storing your Nightwatch e2e tests
+    "test/pom/tests"// Where you are storing your Nightwatch e2e tests
   ],
   "output_folder": "./reports",
+  "page_objects_path": "./test/pom/pages",
   "selenium": {
     "start_process": true,
     "server_path": seleniumServer.path,
