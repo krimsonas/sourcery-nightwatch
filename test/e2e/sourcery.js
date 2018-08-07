@@ -41,6 +41,22 @@ module.exports = {
                 .waitForElementVisible('.user-info__title');
             }
         });
+        
+        //check if today is set to 7
+        browser.waitForElementVisible('.calendar--today')
+                .assert.containsText('.calendar--today','7');
+
+        //main nav elements are displayed
+        browser.assert.containsText('.main-nav','Time Logging')
+                .assert.containsText('.main-nav','Invoices')
+                .assert.containsText('.main-nav','Tasks')
+                .assert.containsText('.main-nav','Projects')
+                .assert.containsText('.main-nav','Clients')
+                .assert.containsText('.main-nav','Time Entries')
+        //check time logging as default selected and blue
+                .assert.containsText('.main-nav__link--active','Time Logging')
+                .assert.cssProperty('.main-nav__link--active','color','rgba(64, 76, 237, 1)');
+
         //Assert if expected user is logged in
         browser.assert.containsText('.user-info__title', 'Demo User')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
