@@ -44,6 +44,22 @@ module.exports = {
         browser.waitForElementVisible('.calendar--today');
         browser.assert.containsText('.calendar--today','7');
 
+
+        //time logging is displayed
+        browser.assert.containsText('.main-nav','Time Logging');
+        //Invoices is displayed
+        browser.assert.containsText('.main-nav','Invoices');
+        //Projects is displayed
+        browser.assert.containsText('.main-nav','Projects');
+        //Clients is displayed
+        browser.assert.containsText('.main-nav','Clients');
+        //Time entries is displayed
+        browser.assert.containsText('.main-nav','Time Entries');
+
+        //check time logging as defoult selected and blue
+        browser.assert.containsText('.main-nav__link.main-nav__link--active','Time Logging');
+        browser.assert.cssProperty('.main-nav__link.main-nav__link--active','color','rgba(64, 76, 237, 1)');
+
         //Assert if expected user is logged in
         browser.assert.containsText('.user-info__title', 'Demo User')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
