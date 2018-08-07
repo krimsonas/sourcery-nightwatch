@@ -53,10 +53,19 @@ module.exports = {
         browser.assert.containsText('.user-info__title', 'Linas Steponavicius')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
 
-        //Assert if selected date is correct
-        var date = new Date();
-        browser.assert.containsText('.calendar--today', date.getDate());
+        //Assert if user name is correct
+        let entries = ['Time Logging', 'Tasks', 'Invoices','Projects','Clients','Time Entries'];
+        for(let i = 0; i < entries.length; i++)
+        {
+            browser.assert.containsText('.main-nav', entries[i]);
+        }
 
+        //Assert Time Logging is selected
+        browser.assert.containsText('.main-nav__link--active', 'Time Logging');
+
+        //Assert Time Logging is in blue
+        browser.expect.element('.main-nav__link--active').to.have.css('color').which.equals('rgba(64, 76, 237, 1)');
+        
         browser.end();
     }
 };
