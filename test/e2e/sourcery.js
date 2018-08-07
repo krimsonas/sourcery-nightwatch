@@ -67,8 +67,10 @@ module.exports = {
         browser.element('css selector', 'a[href="/time-entries"]');
         browser.assert.containsText('a[href="/time-entries"]','Time Entries');
 
-      //  browser.element('css selector', '[aria-current="true"]');
-       // browser.assert.containsText('aria-current="true"','Time Logging'); 
+        // Third bullet point
+        browser.element('css selector', 'a[href="/time-logging"]');
+        browser.assert.cssProperty('a[href="/time-logging"]', 'color', 'rgba(64, 76, 237, 1)').end();
+    
 
 
 
