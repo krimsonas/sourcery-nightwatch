@@ -1,0 +1,8 @@
+const ELEMENT_NOT_FOUND = -1;
+const ELEMENT_FOUND = 0;
+const CSS_SELECTOR = 'css selector';
+module.exports = {
+    "ELEMENT_NOT_FOUND": ELEMENT_NOT_FOUND,
+    "ELEMENT_FOUND": ELEMENT_FOUND,
+    "CSS_SELECTOR": CSS_SELECTOR
+}

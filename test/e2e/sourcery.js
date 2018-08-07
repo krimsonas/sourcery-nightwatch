@@ -1,62 +1,69 @@
 var conf = require('../../nightwatch.conf.js');
+const c = require('../../libs/constants');
+const common= require('../../obj/common');
+const login = require('../../obj/login');
+const timeLogging = require('../../obj/timeLogging');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
         browser
         .url(browser.launchUrl)
         .waitForElementVisible('h1'); // wait for the Login title
+        
         //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
+        browser.element(c.CSS_SELECTOR, login.userSelect, function(result) {
             if(result.status != -1) { 
-                browser.click('#react-select-2--value');
+                browser.click(login.userSelect);
             }
         });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Martynas Šatas"]', function(result) {
+
+        //Select user from expanded droprown
+        browser.element(c.CSS_SELECTOR, login.getSpecificSelectUserOption(login.user), function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Martynas Šatas"]');
+                browser.click(c.CSS_SELECTOR, login.getSpecificSelectUserOption(login.user));
             }
         });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Martynas Šatas');
+
+        //Assert user value is selected
+        browser.assert.containsText(login.userSelectedValue, login.user);
 
         //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
+        browser.element(c.CSS_SELECTOR, login.roleSelect, function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
+                browser.click(c.CSS_SELECTOR, login.roleSelect);
             }
         });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
+
+        //Select role from expanded droprown
+        browser.element(c.CSS_SELECTOR, login.getSpecificSelectRoleOption(login.role), function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
+                browser.click(c.CSS_SELECTOR, login.getSpecificSelectRoleOption(login.role));
             }
         });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
+
+        //Assert role value is selected
+        browser.assert.containsText(login.roleSelectedValue, login.role);
+
         //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
+        browser.element(c.CSS_SELECTOR, common.submitButton, function(result) {
             if(result.status != -1) {
                 browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .click(c.CSS_SELECTOR, common.submitButton)
+                .waitForElementVisible(timeLogging.loggedInUsersName);
             }
         });
         
-        //Assert if fields in menu are present
-        browser.assert.containsText('.main-nav', 'Time Logging');
-        browser.assert.containsText('.main-nav', 'Invoices');
-        browser.assert.containsText('.main-nav', 'Projects');
-        browser.assert.containsText('.main-nav', 'Clients');
-        browser.assert.containsText('.main-nav', 'Time Entries');
-        browser.assert.containsText('.main-nav', 'Tasks');
+        //Assert if all necessary buttons in menu are present
+       for (let i = 0; i < common.menuButtons.length; i++) {
+           browser.assert.containsText(common.menuBar, common.menuButtons[i]);
+       };
 
         //Assert if Time logging is selected and color is blue
-        browser.assert.containsText('.main-nav__link--active', 'Time Logging');
-        browser.assert.cssProperty('.main-nav__link--active', 'color','rgba(64, 76, 237, 1)');
+        browser.assert.containsText(common.activeMenuField, common.menuButtons[0]);
+        browser.assert.cssProperty(common.activeMenuField, 'color', common.colorBlue);
         
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Martynas Šatas')
+        //Assert if correct user is displayed
+        browser.assert.containsText(timeLogging.loggedInUsersName, login.user)
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
     }
