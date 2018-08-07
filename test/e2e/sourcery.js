@@ -11,7 +11,7 @@ module.exports = {
                 browser.click('#react-select-2--value');
             }
         });
-       // browser.pause(10000);
+
         //Select from expanded dropdown--Step 2
         browser.element('css selector', '[aria-label="Demo User"]', function(result) {
             if(result.status != -1) { 
@@ -45,7 +45,7 @@ module.exports = {
             }
         });
 
-        // First bullet point
+
         browser.element('css selector', '[class="user-info__title"]', function(result) {
             if(result.status != -1) {
                 browser.waitForElementVisible('.user-info__title');
@@ -53,42 +53,12 @@ module.exports = {
         });
         browser.assert.containsText('.user-info__title','Demo User'); 
 
-        // Second bullet point
-        browser.element('css selector', 'a[href="/time-logging"]');
         browser.assert.containsText('a[href="/time-logging"]','Time Logging'); 
-        browser.element('css selector', 'a[href="/invoices"]');
         browser.assert.containsText('a[href="/invoices"]','Invoices'); 
-        browser.element('css selector', 'a[href="/tasks"]');
         browser.assert.containsText('a[href="/tasks"]','Tasks'); 
-        browser.element('css selector', 'a[href="/projects"]');
         browser.assert.containsText('a[href="/projects"]','Projects');
-        browser.element('css selector', 'a[href="/clients"]');
         browser.assert.containsText('a[href="/clients"]','Clients'); 
-        browser.element('css selector', 'a[href="/time-entries"]');
         browser.assert.containsText('a[href="/time-entries"]','Time Entries');
-
-        // Third bullet point
-        browser.element('css selector', 'a[href="/time-logging"]');
         browser.assert.cssProperty('a[href="/time-logging"]', 'color', 'rgba(64, 76, 237, 1)').end();
-    
-
-
-
-        /*
-        //Assert that todays date is number 7
-        browser.element('css selector', '[class="calendar--today"]', function(result) {
-            if(result.status != -1) {
-                browser.waitForElementVisible('.calendar--today');
-            }
-        });
-        browser.assert.containsText('.calendar--today','7'); */
-        
-
-
-
-                //Assert if expected user is logged in
-     /*   browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();*/
     }
 };
