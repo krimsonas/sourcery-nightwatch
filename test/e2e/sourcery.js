@@ -56,6 +56,7 @@ module.exports = {
         //Assert if time logging is selected and marked in blue color 
         browser.assert.containsText('.main-nav__link--active', 'Time Logging')
         browser.assert.cssProperty('.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)');
+        
         browser.end();
     }
 };
