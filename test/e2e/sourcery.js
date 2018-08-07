@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Kristina Vilutiene"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Kristina Vilutiene"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Kristina Vilutiene');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -41,9 +41,20 @@ module.exports = {
                 .waitForElementVisible('.user-info__title');
             }
         });
+
+        
+
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
+        browser.assert.containsText('.user-info__title', 'Kristina Vilutiene')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
+            .assert.containsText('.calendar__day.calendar--today.calendar--selected', '7')
+            //.assert.containsText('.calendar__day.calendar--today.calendar--selected', '8') //
+            .assert.containsText('.user-info__title', 'Kristina Vilutiene')
+            .assert.containsText('.main-nav__link.main-nav__link--active', 'Time Logging') 
+            .assert.containsText('.main-nav', 'Invoices')
+            .assert.containsText('.main-nav', 'Tasks')
+            // nespejau
             .end();
+            
     }
 };
