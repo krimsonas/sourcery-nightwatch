@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprow
-        browser.element('css selector', '[aria-label="Rimantas Andrulevicius"]', function(result) {
+        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Rimantas Andrulevicius"]');
+                browser.click('css selector', '[aria-label="Demo User"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Rimantas Andrulevicius');
+        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -45,7 +45,7 @@ module.exports = {
         browser.assert.containsText('.calendar--today','7');
 
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Rimantas Andrulevicius')
+        browser.assert.containsText('.user-info__title', 'Demo User')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
 
