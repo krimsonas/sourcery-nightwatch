@@ -40,10 +40,29 @@ module.exports = {
                 .click('css selector', '[type="submit"]')
                 .waitForElementVisible('.user-info__title');
             }
+            
+    
         });
+       browser.waitForElementVisible('.calendar__day.calendar--today.calendar--selected'); // wait for the calendar to appear
+// long name
+        //browser.assert.containsText('.calendar--today', '7');
+
+  
+    browser.assert.containsText('.main-nav', 'Time Logging');
+    browser.assert.containsText('.main-nav', 'Invoices');
+    browser.assert.containsText('.main-nav', 'Projects');
+    browser.assert.containsText('.main-nav', 'Clients');
+    browser.assert.containsText('.main-nav', 'Time Entries');
+
+
+    browser.assert.cssProperty(".main-nav__link.main-nav__link--active", "color", "rgba(64, 76, 237, 1)");
+   // <a class="main-nav__link main-nav__link--active" aria-current="true" href="/time-logging">Time Logging</a>
         //Assert if expected user is logged in
         browser.assert.containsText('.user-info__title', 'Demo User')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
     }
 };
+// <div class="calendar__day calendar--today calendar--selected"><span class="calendar__date">7</span></div>
+
+ 
