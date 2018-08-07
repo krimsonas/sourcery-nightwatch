@@ -21,12 +21,7 @@ module.exports = {
       "webdriver.chrome.driver" : chromedriver.path
     }
   },
-  "test_settings": {
-    "default": {
-      "launch_url" : "https://"+credentials.user+":"+credentials.password+"@dq508exvr03rj.cloudfront.net/",
-      "screenshots": {
-        "enabled": true,
-        "path": './screenshots'
+eenshots'
       },
       "globals": {
         "waitForConditionTimeout": 5000
