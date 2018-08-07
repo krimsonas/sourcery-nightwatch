@@ -43,7 +43,23 @@ module.exports = {
         });
         //Assert if expected user is logged in
         browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+            .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+        
+
+        //Assert if expected user is logged in
+           browser.assert.containsText('.user-info__title', 'Demo User')
+           .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+           
+        
+        //test current day
+         browser.assert.containsText('.calendar__day.calendar--today', '7')
+         .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+
+        //test current day
+        browser.assert.containsText('.calendar__label.calendar--complete', '120.64')
+             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
+             .end();
+
+
     }
 };
