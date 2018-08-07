@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Lukas Klimišinas"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Lukas Klimišinas"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Lukas Klimišinas');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -41,9 +41,20 @@ module.exports = {
                 .waitForElementVisible('.user-info__title');
             }
         });
+
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        browser.waitForElementVisible('.user-info__title');
+        browser.assert.containsText('.user-info__title', 'Lukas Klimišinas');
+
+        browser.waitForElementVisible('.main-nav')
+        .assert.containsText('.main-nav', 'Time Logging')
+        .assert.containsText('.main-nav', 'Invoices')
+        .assert.containsText('.main-nav', 'Projects')
+        .assert.containsText('.main-nav', 'Clients')
+        .assert.containsText('.main-nav', 'Time Entries')
+        .assert.containsText('.main-nav__link.main-nav__link--active', 'Time Logging')
+        .assert.cssProperty('.main-nav__link.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)').end();
+            //.saveScreenshot(conf.imgpath(browser) + 'Demo.png')
+            //.end();
     }
 };
