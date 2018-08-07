@@ -12,13 +12,14 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Martynas Šatas"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Martynas Šatas"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Martynas Šatas');
+
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -41,8 +42,21 @@ module.exports = {
                 .waitForElementVisible('.user-info__title');
             }
         });
+        
+        //Assert if fields in menu are present
+        browser.assert.containsText('.main-nav', 'Time Logging');
+        browser.assert.containsText('.main-nav', 'Invoices');
+        browser.assert.containsText('.main-nav', 'Projects');
+        browser.assert.containsText('.main-nav', 'Clients');
+        browser.assert.containsText('.main-nav', 'Time Entries');
+        browser.assert.containsText('.main-nav', 'Tasks');
+
+        //Assert if Time logging is selected and color is blue
+        browser.assert.containsText('.main-nav__link--active', 'Time Logging');
+        browser.assert.cssProperty('.main-nav__link--active', 'color','rgba(64, 76, 237, 1)');
+        
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
+        browser.assert.containsText('.user-info__title', 'Martynas Šatas')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
     }
