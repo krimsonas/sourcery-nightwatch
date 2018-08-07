@@ -26,13 +26,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
+        browser.element('css selector', '[aria-label="Team Lead"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
+                browser.click('css selector', '[aria-label="Team Lead"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
+        browser.assert.containsText('#react-select-3--value-item', 'Team Lead');
         //Click submit button
         browser.element('css selector', '[type="submit"]', function(result) {
             if(result.status != -1) {
