@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Deividas Vaškevičius"]', function(result) {
+        browser.element('css selector', '[aria-label="Deividas Vaškevicius"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Deividas Vaškevičius"]');
+                browser.click('css selector', '[aria-label="Deividas Vaškevicius"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-4--value-item', 'Deividas Vaškevičius');
+        browser.assert.containsText('#react-select-2--value-item', 'Deividas Vaškevicius');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -34,6 +34,7 @@ module.exports = {
         //Assert value is selected
         browser.assert.containsText('#react-select-3--value-item', 'Admin');
         //Click submit button
+        
         browser.element('css selector', '[type="submit"]', function(result) {
             if(result.status != -1) {
                 browser
@@ -42,17 +43,17 @@ module.exports = {
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Deividas Vaškevičius')
+        browser.assert.containsText('.user-info__title', 'Deividas Vaškevicius')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
 
-        browser.assert.containsText('.main-nav__link', 'Time Logging');
-        browser.assert.containsText('.main-nav__link', 'Invoices');
-        browser.assert.containsText('.main-nav__link', 'Projects');
-        browser.assert.containsText('.main-nav__link', 'Clients');
-        browser.assert.containsText('.main-nav__link', 'Time entries');
+        browser.assert.containsText('.main-nav', 'Time Logging');
+        browser.assert.containsText('.main-nav', 'Invoices');
+        browser.assert.containsText('.main-nav', 'Projects');
+        browser.assert.containsText('.main-nav', 'Clients');
+        browser.assert.containsText('.main-nav', 'Time Entries');
         
-        browser.assert.containsText('.main-nav__link main-nav__link--active', 'aria-current="true"');
-        browser.expect.element('#nav__link--active').to.have.css('color').which.equals('#404ced');
+        browser.assert.containsText('.main-nav__link.main-nav__link--active', 'Time Logging');
+        browser.expect.element('.main-nav__link--active').to.have.css('color').which.equals('rgba(64, 76, 237, 1)');
         
         var d = new Date();
         browser.assert.containsText('.calendar__day.calendar--today.calendar--selected.calendar__day', d.getDate());
