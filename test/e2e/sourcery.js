@@ -5,34 +5,41 @@ module.exports = {
         browser
         .url(browser.launchUrl)
         .waitForElementVisible('h1'); // wait for the Login title
+        
         //Click to expand select user dropdown
         browser.element('css selector', '#react-select-2--value', function(result) {
             if(result.status != -1) { 
                 browser.click('#react-select-2--value');
             }
         });
+        
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Linas Steponavicius"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Linas Steponavicius"]');
             }
         });
+
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Linas Steponavicius');
+        
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
                 browser.click('css selector', '#react-select-3--value');
             }
         });
+        
         //Select from expanded droprown
         browser.element('css selector', '[aria-label="Admin"]', function(result) {
             if(result.status != -1) { 
                 browser.click('css selector', '[aria-label="Admin"]');
             }
         });
+
         //Assert value is selected
         browser.assert.containsText('#react-select-3--value-item', 'Admin');
+        
         //Click submit button
         browser.element('css selector', '[type="submit"]', function(result) {
             if(result.status != -1) {
@@ -41,9 +48,15 @@ module.exports = {
                 .waitForElementVisible('.user-info__title');
             }
         });
+
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        browser.assert.containsText('.user-info__title', 'Linas Steponavicius')
+            .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+
+        //Assert if selected date is correct
+        var date = new Date();
+        browser.assert.containsText('.calendar--today', date.getDate());
+
+        browser.end();
     }
 };
