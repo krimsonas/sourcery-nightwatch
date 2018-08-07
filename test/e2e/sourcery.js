@@ -11,7 +11,7 @@ module.exports = {
                 browser.click('#react-select-2--value');
             }
         });
-        //Select from expanded droprow
+        //Select from expanded droprown
         browser.element('css selector', '[aria-label="Demo User"]', function(result) {
             if(result.status != -1) { 
                 browser.click('css selector', '[aria-label="Demo User"]');
@@ -49,6 +49,7 @@ module.exports = {
         //main nav elements are displayed
         browser.assert.containsText('.main-nav','Time Logging')
                 .assert.containsText('.main-nav','Invoices')
+                .assert.containsText('.main-nav','Tasks')
                 .assert.containsText('.main-nav','Projects')
                 .assert.containsText('.main-nav','Clients')
                 .assert.containsText('.main-nav','Time Entries')
@@ -60,7 +61,5 @@ module.exports = {
         browser.assert.containsText('.user-info__title', 'Demo User')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
-
-
     }
 };
