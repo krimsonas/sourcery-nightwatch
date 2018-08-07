@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Akvile Jarmalaviciute"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Akvile Jarmalaviciute"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Akvile Jarmalaviciute');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -42,8 +42,18 @@ module.exports = {
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        browser.assert.containsText('.user-info__title', 'Akvile Jarmalaviciute')
+            .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+       
+        browser.assert.containsText('.main-nav', 'Time Logging')
+          .assert.containsText('.main-nav', 'Invoices')
+          .assert.containsText('.main-nav', 'Tasks')
+          .assert.containsText('.main-nav', 'Projects')
+          .assert.containsText('.main-nav', 'Clients')
+          .assert.containsText('.main-nav', 'Time Entries')
+          .assert.containsText('.main-nav__link--active', 'Time Logging')
+          .assert.cssProperty('.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)')
+
+        .end();       
     }
 };
