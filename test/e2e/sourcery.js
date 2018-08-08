@@ -1,61 +1,68 @@
 var conf = require('../../nightwatch.conf.js');
+const constants = require('../../obj/constants.js');
+const common = require('../../obj/common.js');
+const menu = require('../../obj/menu.js');
+const login = require('../../obj/login.js');
+const timeLogging = require('../../obj/timeLogging.js');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
+        let userUnderTest = "Ruta Bielyte";
+        let roleUnderTest = "Admin";
+        let testDate = new Date().getDate();
+        let testScreenshot = "Demo.png";
         browser
-        .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
+            .url(browser.launchUrl)
+            .waitForElementVisible(common.pageTitle);
         //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
+        browser.isVisible(login.userSelect, function(result) {
+            if (result.status === constants.ELEMENT_FOUND) {
+                browser.click(login.userSelect);
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Ruta Bielyte"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Ruta Bielyte"]');
+        browser.isVisible(login.getSpecificSelectOption(userUnderTest), function (result) {
+            if (result.status === constants.ELEMENT_FOUND) {
+                browser.click(login.getSpecificSelectOption(userUnderTest))
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Ruta Bielyte');
+        browser.assert.containsText(login.userSelectedItem, userUnderTest);
         //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
+        browser.isVisible(login.roleSelect, function (result) {
+            if (result.status === constants.ELEMENT_FOUND) {
+                browser.click(login.roleSelect);
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
+        browser.isVisible(login.getSpecificSelectOption(roleUnderTest), function (result) {
+            if (result.status === constants.ELEMENT_FOUND) {
+                browser.click(login.getSpecificSelectOption(roleUnderTest));
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
+        browser.assert.containsText(login.roleSelectedItem, roleUnderTest);
         //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
+        browser.isVisible(common.submitButton, function (result) {
+            if (result.status === constants.ELEMENT_FOUND) {
                 browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                    .click(common.submitButton)
+                    .waitForElementVisible(menu.userInfo);
             }
         });
-        //Assert if expected user is logged in
-        //Menu is full
-        //Time logging is selected and marked in blue
-        browser.assert.containsText('.user-info__title', 'Ruta Bielyte')
-            .assert.containsText('[href="/time-logging"]', 'Time Logging')
-            .assert.containsText('[href="/invoices"]', 'Invoices')
-            .assert.containsText('[href="/tasks"]', 'Tasks')
-            .assert.containsText('[href="/projects"]', 'Projects')
-            .assert.containsText('[href="/clients"]', 'Clients')
-            .assert.containsText('[href="/time-entries"]', 'Time Entries')
-            .assert.containsText('.main-nav__link--active', 'Time Logging')
-            .assert.cssProperty('.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+        browser
+            .assert.containsText(menu.userInfo, userUnderTest)
+            .assert.containsText(menu.timeLoggingItem, 'Time Logging')
+            .assert.containsText(menu.invoicesItem, 'Invoices')
+            .assert.containsText(menu.tasksItem, 'Tasks')
+            .assert.containsText(menu.projectsItem, 'Projects')
+            .assert.containsText(menu.clientsItem, 'Clients')
+            .assert.containsText(menu.timeEntriesItem, 'Time Entries')
+            .assert.containsText(menu.activeMenuItem, 'Time Logging')
+            .assert.cssProperty(menu.activeMenuItem, 'color', menu.activeMenuItemColor)
+            .assert.containsText(timeLogging.currentDate, testDate)
+            .saveScreenshot(conf.imgpath(browser) + testScreenshot)
+            .end();
 
-        browser.assert.containsText('.calendar--today', '7') 
-        .end();
     }
 };
