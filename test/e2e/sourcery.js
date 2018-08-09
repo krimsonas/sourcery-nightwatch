@@ -1,4 +1,5 @@
 var conf = require('../../nightwatch.conf.js');
+var vardas = "Lukas Aleknavicius";
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
@@ -12,13 +13,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Lukas Aleknavicius"]', function(result) {
+        browser.element('css selector', '[aria-label="'+ vardas +'"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Lukas Aleknavicius"]');
+                browser.click('css selector', '[aria-label="'+ vardas +'"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Lukas Aleknavicius');
+        browser.assert.containsText('#react-select-2--value-item', vardas);
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -43,8 +44,9 @@ module.exports = {
         });
 
        //Assert if shown date is correct
-       browser.waitForElementVisible('.calendar--selected', 5555);
-       browser.assert.containsText('.calendar--selected' , '9');
+       var date = new Date().getDate();
+       browser.waitForElementVisible('.calendar--selected', 100);
+       browser.assert.containsText('.calendar--selected' , date);
 
       //Asert that required buttons are displayed
       browser.assert.containsText('.main-nav' , 'Time Logging');
