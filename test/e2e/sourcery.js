@@ -51,6 +51,10 @@ module.exports = {
         browser.assert.containsText('a[href="/projects"]', 'Projects');
         browser.assert.containsText('a[href="/clients"]', 'Clients');
 
+        var today = new Date();
+        var day = today.getDate();
+        //Assert if value of today day is selected
+        browser.assert.containsText('.calendar__day.calendar--today.calendar--selected', day);
         //Assert if Time logging is active 
         browser.assert.containsText('.main-nav__link.main-nav__link--active', 'Time Logging');
             
