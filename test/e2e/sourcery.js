@@ -56,6 +56,9 @@ module.exports = {
         browser.assert.containsText('.main-nav__link--active', 'Time Logging');
         browser.assert.cssProperty('a[href="/time-logging"]', 'color', 'rgba(64, 76, 237, 1)');
 
+        //Assert if date is correct
+        browser.assert.containsText('.calendar--selected', new Date().getDate());
+
         browser.saveScreenshot(conf.imgpath(browser) + 'Demo.png')
         browser.end();
 
