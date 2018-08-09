@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Paulius Grigaliunas"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Paulius Grigaliunas"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Paulius Grigaliunas');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -38,11 +38,27 @@ module.exports = {
             if(result.status != -1) {
                 browser
                 .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .waitForElementVisible('.user-info__title')
+                .waitForElementVisible('[href="/invoices"]')
+                .waitForElementVisible('.calendar__day.calendar--today.calendar--selected');
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
+        browser.assert.containsText('.user-info__title', 'Paulius Grigaliunas');
+        //
+
+        var d = new Date();
+       // document.getElementById("demo").innerHTML = d.getTime();
+
+       browser.assert.containsText('[href="/time-logging"]', 'Time Logging');
+       browser.assert.cssProperty('[href="/time-logging"]', 'select')
+       browser.assert.cssProperty('[href="/time-logging"]', 'color', 'rgba(64, 76, 237, 1)');
+       //browser.assert.cssProperty('[href="/time-logging"]', 'active', 'true');
+       browser.assert.containsText('[href="/invoices"]', 'Invoices');
+       browser.assert.containsText('main-nav__link', 'Invoices')
+
+
+        browser.assert.containsText('.calendar__day.calendar--today.calendar--selected', '9')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
     }
