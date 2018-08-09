@@ -2,6 +2,10 @@ var conf = require('../../nightwatch.conf.js');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
+        var today = new Date();
+        var day = today.getDate();
+        today = day;
+       
         browser
         .url(browser.launchUrl)
         .waitForElementVisible('h1'); // wait for the Login title
@@ -12,13 +16,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Natalja Chlus"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Natalja Chlus"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Natalja Chlus');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -42,7 +46,14 @@ module.exports = {
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
+        browser.assert.containsText('.user-info__title', 'Natalja Chlus')
+        browser.assert.containsText('.main-nav', 'Time Logging\nInvoices\nTasks\nProjects\nClients\nTime Entries')
+        browser.assert.cssProperty('.main-nav__link--active', 'color','rgba(64, 76, 237, 1)')
+
+        browser.waitForElementVisible('.calendar__day.calendar--today.calendar--selected')
+        browser.assert.containsText('.calendar__day.calendar--today.calendar--selected', today)
+        
+        
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
     }
