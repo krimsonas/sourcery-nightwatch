@@ -1,4 +1,4 @@
 module.exports = {
-    loggedInUsersName : '.user-info__title'  
+    loggedInUsersName: '.user-info__title'
 }
 
