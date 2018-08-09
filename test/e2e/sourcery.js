@@ -1,4 +1,8 @@
-var conf = require('../../nightwatch.conf.js');
+const nightwatchconf = '../../nightwatch.conf.js';
+const user = 'Admin';
+const common= require('../../libs/obj/common.js');
+
+var conf = require(nightwatchconf);
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
@@ -26,18 +30,18 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
+        browser.element('css selector', `[aria-label=${user}]`, function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
+                browser.click('css selector', `[aria-label=${user}]`);
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
+        browser.assert.containsText('#react-select-3--value-item', user);
         //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
+        browser.element('css selector', common.submitButton, function(result) {
             if(result.status != -1) {
                 browser
-                .click('css selector', '[type="submit"]')
+                .click('css selector', common.submitButton)
                 .waitForElementVisible('.user-info__title');
             }
         });
