@@ -1,6 +1,7 @@
 const nightwatchconf = '../../nightwatch.conf.js';
 const user = 'Admin';
 const common= require('../../libs/obj/common.js');
+var today = new Date();
 
 var conf = require(nightwatchconf);
 
@@ -42,11 +43,23 @@ module.exports = {
             if(result.status != -1) {
                 browser
                 .click('css selector', common.submitButton)
-                .waitForElementVisible('.user-info__title');
+                .waitForElementVisible('.user-info__title')
+                .waitForElementVisible('.calendar__day.calendar--today.calendar--selected').waitForElementVisible('[href="/invoices"]').waitForElementVisible('[href="/time-logging"]');
             }
         });
+        //Assert if date is correct
+        browser.assert.containsText('.calendar__day.calendar--today.calendar--selected', today.getDate());
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
+        browser.assert.containsText('.user-info__title', 'Demo User');
+
+        //Assert 
+        browser.assert.cssProperty('.main-nav__link.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)');
+        browser.assert.containsText('[href="/time-logging"]', 'Time Logging');browser.assert.containsText('[href="/invoices"]','Invoices');
+        browser.assert.containsText('[href="/tasks"]','Tasks');
+        browser.assert.containsText('[href="/projects"]','Projects');
+        browser.assert.containsText('[href="/clients"]','Clients');
+        browser.assert.containsText('[href="/time-entries"]','Time Entries')       
+        //Assert 
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
     }
