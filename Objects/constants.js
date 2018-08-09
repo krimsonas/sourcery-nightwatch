@@ -1,0 +1,7 @@
+const ELMENT_NOT_FOUND = -1;
+const ELEMENT_FOUND = 0;
+
+module.exports = {
+    "ELEMENT_NOT_FOUND":ELEMENT_NOT_FOUND,
+    "ELEMENT_FOUND":ELEMENT_FOUND
+}

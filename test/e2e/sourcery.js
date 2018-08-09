@@ -1,4 +1,7 @@
 var conf = require('../../nightwatch.conf.js');
+var common = require('../../Objects/common.js');
+var login = require('../../Objects/login');
+var timeLogging = require('../../Objects/timeLogging')
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
