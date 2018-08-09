@@ -1,4 +1,6 @@
 var conf = require('../../nightwatch.conf.js');
+var userName = "Tautvydas Dirmeikis"
+var role = "Admin"
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
@@ -12,13 +14,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Tautvydas Dirmeikis"]', function(result) {
+        browser.element('css selector', `[aria-label="${userName}"]`, function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Tautvydas Dirmeikis"]');
+                browser.click('css selector', `[aria-label="${userName}"]`);
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Tautvydas Dirmeikis');
+        browser.assert.containsText('#react-select-2--value-item', userName);
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -26,13 +28,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
+        browser.element('css selector', `[aria-label="${role}"]`, function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
+                browser.click('css selector', `[aria-label="${role}"]`);
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
+        browser.assert.containsText('#react-select-3--value-item', role);
         //Click submit button
         browser.element('css selector', '[type="submit"]', function(result) {
             if(result.status != -1) {
@@ -42,7 +44,7 @@ module.exports = {
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Tautvydas Dirmeikis');
+        browser.assert.containsText('.user-info__title', userName);
 
         //Assert buttons are existing in menu
         browser.assert.containsText('.main-nav', 'Time Logging');
