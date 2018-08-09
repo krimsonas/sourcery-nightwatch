@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Justina Meškone"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Justina Meškone"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Justina Meškone');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -42,8 +42,23 @@ module.exports = {
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
+        browser.assert.containsText('.user-info__title', 'Justina Meškone')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
+           
+            .waitForElementVisible('.page__header');
+            browser.assert.containsText('.main-header__nav', 'Time Logging')
+            browser.assert.containsText('.main-header__nav', 'Invoices')
+            browser.assert.containsText('.main-header__nav', 'Projects')
+            browser.assert.containsText('.main-header__nav', 'Clients')
+            browser.assert.containsText('.main-header__nav', 'Tasks')
+            browser.assert.containsText('.main-header__nav', 'Time Entries')
+            browser.assert.containsText('.main-header__nav', 'Time Logging', '.style.color = "#404CED"')
+            
+            .waitForElementVisible('.page__frame');
+            browser.assert.containsText('.calendar--today', 9)
+
+
             .end();
     }
 };
+
