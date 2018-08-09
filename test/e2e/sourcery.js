@@ -2,6 +2,9 @@ var conf = require('../../nightwatch.conf.js');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
+        var today = new Date();
+       var day = today.getDate();
+       today = day;
         browser
         .url(browser.launchUrl)
         .waitForElementVisible('h1'); // wait for the Login title
@@ -12,13 +15,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Laima Kaspare"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Laima Kaspare"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Laima Kaspare');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -38,12 +41,26 @@ module.exports = {
             if(result.status != -1) {
                 browser
                 .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .waitForElementVisible('.user-info__title')
+                .waitForElementVisible('.calendar--today');
+        
             }
         });
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+
+
+//Assert if expected user is logged in
+        browser.assert.containsText('.user-info__title', 'Laima Kaspare')
+            .saveScreenshot(conf.imgpath(browser) + 'Laima Kaspare.png')
+            browser.assert.containsText('.calendar--today', today)
+            browser.assert.containsText('.user-info__title', 'Laima Kaspare')
+            browser.assert.containsText('.main-nav', 'Time Logging\nInvoices\nTasks\nProjects\nClients\nTime Entries')
+            browser.assert.containsText('.main-nav__link--active', 'Time Logging')
+            browser.assert.cssProperty('.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)')
+            
+            
+            
+            
+.end();
+            
     }
 };
