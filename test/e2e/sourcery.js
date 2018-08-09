@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Aurimas Abaravicius"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Aurimas Abaravicius"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Aurimas Abaravicius');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -38,12 +38,28 @@ module.exports = {
             if(result.status != -1) {
                 browser
                 .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .waitForElementVisible('.calendar__day.calendar--today.calendar--selected');
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        browser.assert.containsText('.user-info__title', 'Aurimas Abaravicius')
+            .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+        //Assert if above menu list are displayed pages
+        browser.assert.containsText('a[href="/time-logging"]', 'Time Logging');
+        browser.assert.containsText('a[href="/invoices"]', 'Invoices');
+        browser.assert.containsText('a[href="/tasks"]', 'Tasks');
+        browser.assert.containsText('a[href="/projects"]', 'Projects');
+        browser.assert.containsText('a[href="/clients"]', 'Clients');
+
+        var today = new Date();
+        var day = today.getDate();
+        //Assert if value of today day is selected
+        browser.assert.containsText('.calendar__day.calendar--today.calendar--selected', day);
+        //Assert if Time logging is active 
+        browser.assert.containsText('.main-nav__link.main-nav__link--active', 'Time Logging');
+            
+        //Assert if time logging is active blue
+        browser.assert.cssProperty('.main-nav__link.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)')
+        .end();
     }
 };
