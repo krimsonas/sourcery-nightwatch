@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Giedre Manuilova"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Giedre Manuilova"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Giedre Manuilova');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -42,8 +42,20 @@ module.exports = {
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
+        browser.assert.containsText('.user-info__title', 'Giedre Manuilova')
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+            .waitForElementVisible('.user-info__title');
+
+        //Check today
+            browser.assert.containsText('.calendar--today', '9');
+            
+        //check if displayed menu list names
+       
+        browser.assert.containsText('.main-nav', 'Time Logging\nInvoices\nTasks\nProjects\nClients\nTime Entries');
+        //check if menu item selected
+        browser.assert.containsText('.main-nav__link--active', 'Time Logging');
+        //check if marked blue
+        browser.assert.cssProperty('.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)')
+        .end();
     }
 };
