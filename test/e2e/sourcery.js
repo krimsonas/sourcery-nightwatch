@@ -54,8 +54,9 @@ module.exports = {
         browser.assert.containsText('a[href="/projects"]', "Projects");
         browser.assert.containsText('a[href="/clients"]', "Clients");
         browser.assert.containsText('a[href="/time-entries"]', "Time Entries");
-        browser.assert.containsText('.main-nav__link.main-nav__link--active', "Time Logging");
         
+        browser.assert.cssProperty('.main-nav__link.main-nav__link--active', "color", "rgba(64, 76, 237, 1)");
+               
         browser.end();
     }
 };
