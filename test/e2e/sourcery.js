@@ -51,11 +51,11 @@ module.exports = {
         browser.assert.containsText('a[href="/projects"]', 'Projects');
         browser.assert.containsText('a[href="/clients"]', 'Clients');
 
-        //Assert if Time logging is active blue
+        //Assert if Time logging is active 
         browser.assert.containsText('.main-nav__link.main-nav__link--active', 'Time Logging');
             
-        //Assert if value of today day is selected
-        browser.assert.containsText('.calendar__day.calendar--today.calendar--selected', '9')
+        //Assert if time logging is active blue
+        browser.assert.cssProperty('.main-nav__link.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)')
         .end();
     }
 };
