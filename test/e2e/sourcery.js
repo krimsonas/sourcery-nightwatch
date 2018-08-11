@@ -1,62 +1,45 @@
-var conf = require('../../nightwatch.conf.js');
+//var conf = require('../../nightwatch.conf.js');
+const c = require('../../libs/constants');
+const common= require('../../obj/common');
+const login = require('../../obj/login');
+const timeLogging = require('../../obj/timeLogging');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
+
+        let user = "Linas Steponavicius";
+        let role = "Admin";
+
         browser
         .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        
-        //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
-            }
-        });
-        
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Linas Steponavicius"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Linas Steponavicius"]');
-            }
-        });
-
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Linas Steponavicius');
-        
-        //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
-            }
-        });
-        
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
-            }
-        });
-
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
-        
-        //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
+        .waitForElementVisible(common.pageTitle)
+        .isVisible(login.userSelect, function(result){  //Click to expand the user dropdown
+            if(result.status === c.ELEMENT_FOUND)
+                browser.click(login.userSelect);
+        })
+        .isVisible(login.getUserSelect(user), function(result){ //Select the designated user
+            if(result.status === c.ELEMENT_FOUND)
+                browser.click(login.getUserSelect(user));
+        })
+        .assert.containsText(login.userSelectedValue, user) //Check whether the selected user is correct
+        .waitForElementVisible(login.roleSelect, function(result){  //Click to expand select role dropdown
+            if(result.status === c.ELEMENT_FOUND)
+                browser.click(login.roleSelect);
+        })
+        .isVisible(login.getRoleSelect(role), function(result){  //Select from expanded droprown
+            if(result.status === c.ELEMENT_FOUND)
+                browser.click(login.getRoleSelect(role));
+        })
+        .assert.containsText(login.roleSelectedValue, role)  //Check whether the selected role is correct
+        .isVisible(common.submitButton, function(result){  //Click the Login button
+            if(result.status === c.ELEMENT_FOUND)
+            {
                 browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .click(common.submitButton)
+                .waitForElementVisible(timeLogging.loggedInUsersName);
             }
-        });
-
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Linas Steponavicius')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
-
-        //Assert if selected date is correct
-        var date = new Date();
-        browser.assert.containsText('.calendar--today', date.getDate());
-
-        browser.end();
+        })
+        .assert.containsText(timeLogging.loggedInUsersName, user) //Check if the correct user has been logged in
+        .end();
     }
-};
+}; 
