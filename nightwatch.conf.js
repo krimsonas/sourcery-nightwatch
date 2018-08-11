@@ -36,7 +36,8 @@ module.exports = {
 		    "javascriptEnabled": true
       }
     },
-  }
+  },
+  'page_objects_path' : './obj'
 }
 
 function padLeft (count) { // theregister.co.uk/2016/03/23/npm_left_pad_chaos/
