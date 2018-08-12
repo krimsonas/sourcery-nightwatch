@@ -4,40 +4,39 @@ const login = require('../../obj/login');
 const timeLogging = require('../../obj/timeLogging');
 const userUnderTest = 'Martynas Šatas';
 const roleUnderTest = 'Admin';
-const menuButtons = ['Time Logging', 'Invoices', 'Projects', 'Clients', 'Time Entries', 'Tasks'];
-const colorBlue = 'rgba(64, 76, 237, 1)';
+const taskName = 'Test name ' + Date.now();
+const taskDescription = 'Test description';
+const taskRate = 2;
 
 module.exports = {
         'Login to sourcebooks': function (browser) {
                 browser
                         .url(browser.launchUrl)
                         .waitForElementVisible(common.pageTitle)
-                        .isVisible(login.userSelect, function (result) {
-                                browser.click(login.userSelect)
-                        })
-                        .isVisible(login.getSpecificSelectUserOption(userUnderTest), function (result) {
-                                browser.click(login.getSpecificSelectUserOption(userUnderTest))
-                        })
+                        .click(login.userSelect)
+                        .click(login.getSpecificSelectUserOption(userUnderTest))
                         .assert.containsText(login.userSelectedValue, userUnderTest)
-                        .isVisible(login.roleSelect, function (result) {
-                                browser.click(login.roleSelect)
-                        })
-                        .isVisible(login.getSpecificSelectRoleOption(roleUnderTest), function (result) {
-                                browser.click(login.getSpecificSelectRoleOption(roleUnderTest))
-                        })
+                        .click(login.roleSelect)
+                        .click(login.getSpecificSelectRoleOption(roleUnderTest))
                         .assert.containsText(login.roleSelectedValue, roleUnderTest)
-                        .isVisible(common.submitButton, function (result) {
-                                browser
-                                        .click(common.submitButton)
-                                        .waitForElementVisible(timeLogging.loggedInUsersName);
-                        })
-                        .assert.containsText(timeLogging.loggedInUsersName, userUnderTest);
-                for (let i = 0; i < menuButtons.length; i++) {
-                        browser.assert.containsText(common.menuBar, menuButtons[i]);
-                }
-                browser
-                        .assert.containsText(common.activeMenuField, menuButtons[0])
-                        .assert.cssProperty(common.activeMenuField, 'color', colorBlue)
-                        .end();
+                        .click(common.submitButton)
+                        .waitForElementVisible(timeLogging.loggedInUsersName)
+                        .click(common.menuButtonTasks)
+                        .click(common.createTaskButton)
+                        .setValue(common.inputFieldName, taskName)
+                        .setValue(common.inputFieldDescription, taskDescription)
+                        .click(common.dropDownBillable)
+                        .click(common.billableTrue)
+                        .clearValue(common.inputFieldRate)
+                        .setValue(common.inputFieldRate, taskRate)
+                        .click(common.submitButton)
+                        .waitForElementVisible(common.taskCreatedBanner)
+                        .click(common.menuButtonTasks)
+                        .waitForElementVisible(common.pageTitle)
+                        .useXpath()
+                        .setValue(common.searchTaskName, taskName)
+                        .waitForElementVisible(common.resultTaskName)
+                        .assert.containsText(common.resultTaskName, taskName)
+                        .end()
         }
 };
