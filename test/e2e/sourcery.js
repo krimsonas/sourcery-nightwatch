@@ -5,7 +5,8 @@ const timeLogging = require('../../obj/timeLogging');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
-        let userUnderTest = "Demo User";
+        let userUnderTest = "Lukas Klimišinas";
+        let userRole = "Admin";
 
         browser
         .url(browser.launchUrl)
@@ -21,6 +22,17 @@ module.exports = {
             }
         })
         .assert.containsText(login.userSelectedValue, userUnderTest)
+        .isVisible(login.userRoleSelect, function(result) {
+            if(result.status === c.ELEMENT_FOUND){
+                browser.click(login.userRoleSelect)
+            }
+        })
+        .isVisible(login.getSpecificSelectUserRoleOption(userRole), function(result) {
+            if(result.status === c.ELEMENT_FOUND){
+                browser.click(login.getSpecificSelectUserRoleOption(userRole))
+            }
+        })
+        .assert.containsText(login.userRoleSelect, userRole)
         .isVisible(common.submitButton, function(result) {
             if(result.status === c.ELEMENT_FOUND) {
                 browser
@@ -29,6 +41,10 @@ module.exports = {
             }
         })
         .assert.containsText(timeLogging.loggedInUsersName, userUnderTest)
+        .waitForElementVisible(timeLogging.navbar)
+        .assert.containsText(timeLogging.navbar, timeLogging.navbarLinks)
+        .assert.containsText(timeLogging.navbarSelected, timeLogging.navbarSelectedValue)
+        .assert.cssProperty(timeLogging.navbarSelected, timeLogging.activeProperty, timeLogging.navbarActiveValue)
         .end();
     }
 };
