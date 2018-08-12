@@ -23,7 +23,7 @@ module.exports = {
   },
   "test_settings": {
     "default": {
-      "launch_url" : "https://"+credentials.user+":"+credentials.password+"@dq508exvr03rj.cloudfront.net/",
+      "launch_url" : "https://"+credentials.user+":"+credentials.password+"@d3tmsdgt9iu294.cloudfront.net/",
       "screenshots": {
         "enabled": true,
         "path": './screenshots'
