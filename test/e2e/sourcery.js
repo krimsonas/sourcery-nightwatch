@@ -1,49 +1,42 @@
 var conf = require('../../nightwatch.conf.js');
+const common = require('../../obj/common');
+const login = require('../../obj/login');
+const timeLogging = require('../../obj/timeLogging');
+const userUnderTest = 'Martynas Šatas';
+const roleUnderTest = 'Admin';
+const taskName = 'Test name ' + Date.now();
+const taskDescription = 'Test description';
+const taskRate = 2;
 
 module.exports = {
-    'Login to sourcebooks': function (browser) {
-        browser
-        .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
-            }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
-            }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
-        //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
-            }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
-            }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
-        //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
+        'Login to sourcebooks': function (browser) {
                 browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
-            }
-        });
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
-    }
+                        .url(browser.launchUrl)
+                        .waitForElementVisible(common.pageTitle)
+                        .click(login.userSelect)
+                        .click(login.getSpecificSelectUserOption(userUnderTest))
+                        .assert.containsText(login.userSelectedValue, userUnderTest)
+                        .click(login.roleSelect)
+                        .click(login.getSpecificSelectRoleOption(roleUnderTest))
+                        .assert.containsText(login.roleSelectedValue, roleUnderTest)
+                        .click(common.submitButton)
+                        .waitForElementVisible(timeLogging.loggedInUsersName)
+                        .click(common.menuButtonTasks)
+                        .click(common.createTaskButton)
+                        .setValue(common.inputFieldName, taskName)
+                        .setValue(common.inputFieldDescription, taskDescription)
+                        .click(common.dropDownBillable)
+                        .click(common.billableTrue)
+                        .clearValue(common.inputFieldRate)
+                        .setValue(common.inputFieldRate, taskRate)
+                        .click(common.submitButton)
+                        .waitForElementVisible(common.taskCreatedBanner)
+                        .click(common.menuButtonTasks)
+                        .waitForElementVisible(common.pageTitle)
+                        .useXpath()
+                        .setValue(common.searchTaskName, taskName)
+                        .waitForElementVisible(common.resultTaskName)
+                        .assert.containsText(common.resultTaskName, taskName)
+                        .end()
+        }
 };
