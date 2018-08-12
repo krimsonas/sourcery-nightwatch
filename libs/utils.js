@@ -17,5 +17,12 @@ module.exports = {
         if(somethingChanged) {
             console.log("Stub generated!\n");
         }
-    }    
+    },   
+
+    'Login to sourcebooks': function (browser) {
+        browser
+        .url(browser.launchUrl)
+        .waitForElementVisible('h1'); // wait for the Login title
+        //Click to expand select user dropdown
+    }
 }
