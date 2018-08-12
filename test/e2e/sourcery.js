@@ -1,12 +1,7 @@
 const nightwatchconf = '../../nightwatch.conf.js';
-const common= require('../../libs/obj/common.js');
+const addr= require('../../libs/obj/common.js');
+const input= require('../../libs/obj/input.js');
 var funk = require('../../libs/obj/function.js');
-const role = 'Admin';
-const user = 'Demo User';
-var today = new Date();
-var input = 'Pauls tested task6';
-
-
 
 
 var conf = require(nightwatchconf);
@@ -15,74 +10,74 @@ module.exports = {
     'Login to sourcebooks': function (browser) {
         browser
         .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
+        .waitForElementVisible(addr.h1); // wait for the Login title
         //Click to expand select user dropdown
         
         function SelectFromDropList(location, selection) {
                 
-            browser.element('css selector', location, function(result) {
+            browser.element(addr.selector, location, function(result) {
                 if(result.status != -1) { 
                     browser.click(location);
                 }
             });
             //Select from expanded dropdown
-            browser.element('css selector', `[aria-label="${selection}"]`, function(result) {
+            browser.element(addr.selector, funk.MakeLink(selection), function(result) {
                 if(result.status != -1) { 
-                    browser.click('css selector', `[aria-label="${selection}"]`);
+                    browser.click(addr.selector, funk.MakeLink(selection));
                 }
             });
         }
 
         //Click to expand select role dropdown
-        SelectFromDropList('#react-select-2--value', user );
+        SelectFromDropList(addr.userField, input.user );
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', user);
+        browser.assert.containsText(addr.userField, input.user);
 
         //Click to expand select role dropdown
-        SelectFromDropList('#react-select-3--value', role);
+        SelectFromDropList(addr.roleField, input.role);
         //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', role);
+        browser.assert.containsText(addr.roleField, input.role);
 
 
         //Click submit button
-        browser.element('css selector', common.submitButton, function(result) {
+        browser.element(addr.selector, addr.submitButton, function(result) {
             if(result.status != -1) {
                 browser
-                .click('css selector', common.submitButton);
+                .click(addr.selector, addr.submitButton);
             }
         });
+        //****1****
         //Assert if date is correct
-        browser.waitForElementVisible('.calendar__day.calendar--today.calendar--selected').assert.containsText('.calendar__day.calendar--today.calendar--selected', today.getDate());
+        browser.waitForElementVisible(addr.toCalendarToday).assert.containsText(addr.toCalendarToday, input.today.getDate());
         //Assert if expected user is logged in
-        browser.waitForElementVisible('.user-info__title').assert.containsText('.user-info__title', user);
+        browser.waitForElementVisible(addr.userInfo).assert.containsText(addr.userInfo, input.user);
 
         //Assert 
-        browser.assert.cssProperty('.main-nav__link.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)');
-        browser.assert.containsText('[href="/time-logging"]', 'Time Logging');browser.waitForElementVisible('[href="/invoices"]').assert.containsText('[href="/invoices"]','Invoices');
-        browser.assert.containsText('[href="/time-logging"]', 'Time Logging');browser.waitForElementVisible('[href="/invoices"]').assert.containsText('[href="/invoices"]','Invoices');
-        browser.assert.containsText('[href="/tasks"]','Tasks');
-        browser.assert.containsText('[href="/projects"]','Projects');
-        browser.assert.containsText('[href="/clients"]','Clients');
-        browser.assert.containsText('[href="/time-entries"]','Time Entries').saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+        browser.assert.cssProperty('.main-nav__link.main-nav__link--active', 'color', input.timeLoggingColor);
+        browser.assert.containsText(addr.toTimeLogging, 'Time Logging');browser.waitForElementVisible( addr.toInvoices).assert.containsText(addr.toInvoices,'Invoices');
+        browser.assert.containsText(addr.toTimeLogging, 'Time Logging');browser.waitForElementVisible(addr.toInvoices).assert.containsText(addr.toInvoices,'Invoices');
+        browser.assert.containsText(addr.toTasks,'Tasks');
+        browser.assert.containsText(addr.toProjects,'Projects');
+        browser.assert.containsText(addr.toClients,'Clients');
+        browser.assert.containsText(addr.toTimeEntries,'Time Entries').saveScreenshot(conf.imgpath(browser) + 'Demo.png');
                    
         //Assert 
-            
+        //****2****    
 
-        browser.element('css selector', '[href="/tasks"]', function(result) {
+        browser.element(addr.selector, addr.toTasks, function(result) {
             if(result.status != -1) { 
 
-                browser.click( 'a[href="/tasks"]').waitForElementVisible('.btn');
+                browser.click(addr.toTasks).waitForElementVisible(addr.button);
          }
         });
 
+        browser.assert.containsText(addr.button,'Create Task');
 
-        browser.assert.containsText('.btn','Create Task');
 
-
-        browser.element('css selector', '.btn', function(result) {
+        browser.element(addr.selector, addr.button, function(result) {
             if(result.status != -1) {
                 browser
-                .click('css selector', '.btn');
+                .click(addr.selector, addr.button);
             }
         })
         
@@ -91,41 +86,65 @@ module.exports = {
 
 
 
-        browser.setValue('.field__text', input).setValue('.field__textarea', 'Pauls tested task');
+        browser.setValue('.field__text', input.taskName).setValue('.field__textarea', input.description);
         
-
-        SelectFromDropList('.Select-value', "Yes");                
+        SelectFromDropList(addr.selectValue, input.yes);                
         //Assert value is selected
-        browser.assert.containsText('.Select-value', 'Yes');
-        
-                browser.waitForElementVisible('input[name="taskDetailsForm.rate"]').setValue('input[name="taskDetailsForm.rate"]', '4.00');
+        browser.assert.containsText(addr.selectValue, input.yes);
+                
+        browser.element(addr.selector, '[type="submit"]', function(result) {
+                    
+            if(result.status != -1) {     
+                browser.click(addr.selector, '[type="submit"]');
+            }               
+        });
 
-
-
-                browser.element('css selector', '[type="submit"]', function(result) {
-                    if(result.status != -1) {
-                        browser
-                        .click('css selector', '[type="submit"]');
-                    }
-                });
-
-
-        
-        
-        
-        
-
-                browser.element('css selector', '[href="/tasks"]', function(result) {
-                    if(result.status != -1) { 
-        
-                        browser.click('a[href="/tasks"]').waitForElementVisible('.btn');
-                 }
-                });
-
-                browser.waitForElementVisible('.field__text.field__text--small').setValue('.field__text.field__text--small', input);
              
-                browser.waitForElementVisible('.ag-cell.ag-cell-not-inline-editing.ag-cell-no-focus.ag-cell-value').assert.containsText('.ag-cell.ag-cell-not-inline-editing.ag-cell-no-focus.ag-cell-value',input).end();
+         
+        browser.element(addr.selector, addr.toTasks, function(result) {           
+            if(result.status != -1) {                        
+                browser.click(addr.toTasks).waitForElementVisible(addr.button);
+            }               
+        });
+              
+        browser.waitForElementVisible(addr.toTaskSearch).setValue(addr.toTaskSearch, input.taskName).pause(1000);
+      
+        browser.waitForElementVisible(addr.toTaskField).assert.containsText(addr.toTaskField, input.taskName)
+
+    
+        //-----------3-----------
+
+        browser.element(addr.selector, addr.toClients, function(result) {                   
+            if(result.status != -1) {                                
+                browser.click(addr.toClients);
+            }               
+        });
+        browser.waitForElementVisible(addr.button).assert.containsText(addr.button,'Create Client');
+
+        browser.element(addr.selector, addr.button, function(result) {
+            if(result.status != -1) {
+                browser
+                .click(addr.selector, addr.button);
+            }
+        })
+
+        browser.setValue(addr.organizationNamefield, input.organizationName).setValue(addr.firstNameField, input.firstName).setValue(addr.lastNameField, input.lastName).setValue(addr.emailField, input.email);
 
 
+        browser.element(addr.selector, addr.saveButton, function(result) {           
+            if(result.status != -1) {                        
+                browser.click(addr.saveButton);
+            }               
+        });
+
+        browser.element(addr.selector, addr.toClients, function(result) {                   
+            if(result.status != -1) {                                
+                browser.click(addr.toClients);
+            }               
+        });
+
+        browser.waitForElementVisible(addr.toClientSearch).setValue(addr.toClientSearch, input.organizationName).pause(1000);
+      
+        browser.waitForElementVisible(addr.toClientField).assert.containsText(addr.toClientField, input.organizationName ).end();
     }
 };
