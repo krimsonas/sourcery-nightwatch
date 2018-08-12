@@ -1,49 +1,79 @@
 var conf = require('../../nightwatch.conf.js');
+const c = require('../../libs/constants');
+const login = require('../../obj/login');
+const common= require('../../obj/common');
+const task= require('../../obj/task');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
+        let userUnderTest = "Roberta Milašauskaite";
+        let testRole = "Admin";
+
         browser
         .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
+        .pause(1000)
+        .isVisible(login.userSelect, function(result){
+            if(result.status === c.ELEMENT_FOUND){
+                browser.click(login.userSelect)
             }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+        })
+       .isVisible(login.getSpecificSelectUserOption(userUnderTest), function(result){
+           if(result.status === c.ELEMENT_FOUND){
+               browser.click(login.getSpecificSelectUserOption(userUnderTest))
+           }
+       })
+        .isVisible(login.roleSelect, function(result){
+            if(result.status === c.ELEMENT_FOUND){
+                browser.click(login.roleSelect)
             }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
-        //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
-            }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
-            }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
-        //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
-                browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
-            }
-        });
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        })
+       .isVisible(login.getSpecificSelectRoleOption(testRole), function(result){
+           if(result.status === c.ELEMENT_FOUND){
+               browser.click(login.getSpecificSelectRoleOption(testRole))
+           }
+       })
+       .assert.containsText(login.userSelectedValue, userUnderTest)
+       .assert.containsText(login.roleSelectedValue, testRole)
+       .waitForElementVisible(common.loginButton)
+       .isVisible(common.loginButton, function(result) {
+          if(result.status === c.ELEMENT_FOUND){
+              browser
+              .click(common.loginButton)
+          }  
+        })
+    },
+
+    'Create new task': function (browser) {
+        let screenshotPath = conf.imgpath(browser) + 'Demo.png';
+        //navigate to tasks page
+        browser.waitForElementVisible(common.mainBar)
+               .click(task.tasksPage)
+               .assert.containsText(task.pageTitle, task.taskId)
+               .pause(1000);
+
+        //click on create new task button
+        browser.click(task.button)
+               .waitForElementVisible(task.pageTitle, task.createId)
+        
+        //creating new task
+        browser.setValue(task.nameField, task.name)
+
+        browser.setValue(task.descriptionField, task.description)
+
+        browser.click(task.billFields)
+               .click(task.selector, task.billTrue)
+               .setValue(task.billRate, task.value)
+        
+        browser.click(task.button);
+
+        //checking if the task exists
+        browser.click(task.tasksPage)
+               .waitForElementVisible(task.pageTitle, task.taskId)
+               .setValue(task.nameField, task.name)
+               .pause(2000)
+
+        browser.assert.containsText(task.allTasks, task.name)
+                .saveScreenshot(screenshotPath)
+        .end();
     }
 };
