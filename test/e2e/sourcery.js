@@ -12,13 +12,13 @@ module.exports = {
             }
         });
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
+        browser.element('css selector', '[aria-label="Roberta Milašauskaite"]', function(result) {
             if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+                browser.click('css selector', '[aria-label="Roberta Milašauskaite"]');
             }
         });
         //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        browser.assert.containsText('#react-select-2--value-item', 'Roberta Milašauskaite');
         //Click to expand select role dropdown
         browser.element('css selector', '#react-select-3--value', function(result) {
             if(result.status != -1) { 
@@ -42,8 +42,21 @@ module.exports = {
             }
         });
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        browser.assert.containsText('.user-info__title', 'Roberta Milašauskaite')
+            .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+
+        //Assert if time logging, invoices, tasks, projects, clients, time entries are displayed in menu list
+        browser.assert.containsText('.main-nav', 'Time Logging');
+        browser.assert.containsText('.main-nav', 'Invoices');
+        browser.assert.containsText('.main-nav', 'Tasks');
+        browser.assert.containsText('.main-nav', 'Projects');
+        browser.assert.containsText('.main-nav', 'Clients');
+        browser.assert.containsText('.main-nav', 'Time Entries');
+
+        //Assert if time logging is selected and marked in blue color 
+        browser.assert.containsText('.main-nav__link--active', 'Time Logging')
+        browser.assert.cssProperty('.main-nav__link--active', 'color', 'rgba(64, 76, 237, 1)');
+        
+        browser.end();
     }
 };
