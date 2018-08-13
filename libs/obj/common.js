@@ -28,7 +28,11 @@ module.exports = {
     emailField : '[name="clientDetailsForm.contacts[0].email"]',
     saveButton : '[type="submit"]',
     toClientSearch : '.field__text.field__text--small',
-    toClientField : '.ag-cell.ag-cell-not-inline-editing.ag-cell-no-focus.ag-cell-value'
+    toClientField : '.ag-cell.ag-cell-not-inline-editing.ag-cell-no-focus.ag-cell-value',
+
+    //
+    toClientNameField : '.Select-control',
+    toProjectManagerField : '.Select-placeholder'
 
 
 }

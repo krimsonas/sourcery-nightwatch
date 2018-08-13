@@ -22,5 +22,6 @@ module.exports = {
 
     projectName : 'good project',
     projectDescription : 'Pauls tested project',
-    clientName: 'Alfa tik Alfa'
+    clientName: 'Alfa tik Alfa',
+    projectManager: "Grigaliunas, Paulius (paulius.grigaliunas@sourcebooks.com)"
 }

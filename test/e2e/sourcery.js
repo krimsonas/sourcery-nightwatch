@@ -143,7 +143,7 @@ module.exports = {
             }               
         });
 
-        browser.waitForElementVisible(addr.toClientSearch).setValue(addr.toClientSearch, input.organizationName).pause(1000);
+        browser.waitForElementVisible(addr.toClientSearch).setValue(addr.toClientSearch, input.organizationName);
       
         browser.waitForElementVisible(addr.toClientField).assert.containsText(addr.toClientField, input.organizationName );
 
@@ -171,15 +171,27 @@ module.exports = {
 
         browser.setValue('.field__text', input.projectName).setValue('.field__textarea', input.projectDescription);
 
-        SelectFromDropList('.Select-control', 'AMD')
+        SelectFromDropList(addr.toClientNameField, input.clientName)
         //Assert value is selected
 
-        SelectFromDropList('#react-select-5--value', 'Grigaliunas, Paulius (paulius.grigaliunas@sourcebooks.com)');
-
-        
-        //browser.setValue('[id="projectDetailsForm.projectManager"]', "Grigaliunas, Paulius (paulius.grigaliunas@sourcebooks.com)");
+        SelectFromDropList(addr.toProjectManagerField, input.projectManager);
                 
 
+        browser.element(addr.selector, addr.saveButton, function(result) {           
+            if(result.status != -1) {                        
+                browser.click(addr.saveButton);
+            }               
+        });
+
+        browser.element(addr.selector, addr.toProjects, function(result) {                   
+            if(result.status != -1) {                                
+                browser.click(addr.toProjects);
+            }               
+        });
+
+        browser.waitForElementVisible(addr.toClientSearch).setValue(addr.toClientSearch, input.projectName);
+      
+        browser.waitForElementVisible(addr.toClientField).assert.containsText(addr.toClientField, input.projectName );
 
     }
 };
