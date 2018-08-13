@@ -19,7 +19,7 @@ module.exports = {
                 if(result.status != -1) { 
                     browser.click(location);
                 }
-            });
+            }).pause(1000);
             //Select from expanded dropdown
             browser.element(addr.selector, funk.MakeLink(selection), function(result) {
                 if(result.status != -1) { 
@@ -126,7 +126,7 @@ module.exports = {
                 browser
                 .click(addr.selector, addr.button);
             }
-        })
+        });
 
         browser.setValue(addr.organizationNamefield, input.organizationName).setValue(addr.firstNameField, input.firstName).setValue(addr.lastNameField, input.lastName).setValue(addr.emailField, input.email);
 
@@ -145,6 +145,41 @@ module.exports = {
 
         browser.waitForElementVisible(addr.toClientSearch).setValue(addr.toClientSearch, input.organizationName).pause(1000);
       
-        browser.waitForElementVisible(addr.toClientField).assert.containsText(addr.toClientField, input.organizationName ).end();
+        browser.waitForElementVisible(addr.toClientField).assert.containsText(addr.toClientField, input.organizationName );
+
+
+        //------------------------4------------------------
+
+        browser.element(addr.selector, addr.toProjects, function(result) {                   
+            if(result.status != -1) {                                
+                browser.click(addr.toProjects);
+            }               
+        });
+        browser.waitForElementVisible(addr.button).assert.containsText(addr.button,'Create Project');
+
+        browser.element(addr.selector, addr.button, function(result) {
+            if(result.status != -1) {
+                browser
+                .click(addr.selector, addr.button).waitForElementVisible('.tile__title');
+            }
+        });
+
+
+        browser.assert.containsText('.tile__title', 'Project Details');
+
+
+
+        browser.setValue('.field__text', input.projectName).setValue('.field__textarea', input.projectDescription);
+
+        SelectFromDropList('.Select-control', 'AMD')
+        //Assert value is selected
+
+        SelectFromDropList('#react-select-5--value', 'Grigaliunas, Paulius (paulius.grigaliunas@sourcebooks.com)');
+
+        
+        //browser.setValue('[id="projectDetailsForm.projectManager"]', "Grigaliunas, Paulius (paulius.grigaliunas@sourcebooks.com)");
+                
+
+
     }
 };

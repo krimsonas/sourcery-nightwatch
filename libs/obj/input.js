@@ -17,5 +17,10 @@ module.exports = {
     organizationName : 'Alfa tik Alfa',
     firstName : 'Alfa',
     lastName : 'Vyras',
-    email : 'pg5989@gmail.com'
+    email : 'pg5989@gmail.com',
+    //-------------------------------project
+
+    projectName : 'good project',
+    projectDescription : 'Pauls tested project',
+    clientName: 'Alfa tik Alfa'
 }
