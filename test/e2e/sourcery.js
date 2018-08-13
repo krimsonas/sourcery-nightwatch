@@ -102,6 +102,17 @@ module.exports = {
             }
         })
 
+        // Go to Tasks page
+        .isVisible(common.tasks, function(result) {
+            if (result.status === c.ELEMENT_FOUND){
+                browser
+                .click(common.tasks)
+            }
+        })
+
+        .setValue(common.searchTasks, common.taskName).pause(3000)
+
+        .assert.containsText(common.pageSize, '1')
         .end();
     }
 };

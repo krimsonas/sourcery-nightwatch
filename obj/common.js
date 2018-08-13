@@ -13,5 +13,7 @@ module.exports = {
     billExpectedValue : 'Yes',
     hourlyRate : '[id="taskDetailsForm.rate"]',
     hourlyValue : '15.0',
-    saveButton : '[type = "submit"]'
+    saveButton : '[type = "submit"]',
+    searchTasks : '[class="field__text field__text--small"]',
+    pageSize : '[title="Page Size"]'
 }
