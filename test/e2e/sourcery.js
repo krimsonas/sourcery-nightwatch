@@ -15,35 +15,25 @@ module.exports = {
         browser
             .url(browser.launchUrl)
             .waitForElementVisible(common.pageTitle);
-        //Click to expand select user dropdown
+        //Select user 
         browser.isVisible(login.userSelect, function (result) {
             if (result.status === constants.ELEMENT_FOUND) {
-                browser.click(login.userSelect);
+                browser
+                    .click(login.userSelect)
+                    .click(common.getSpecificSelectOptions(userUnderTest));
             }
         });
-        //Select from expanded droprown
-        browser.isVisible(common.getSpecificSelectOptions(userUnderTest), function (result) {
-            if (result.status === constants.ELEMENT_FOUND) {
-                browser.click(common.getSpecificSelectOptions(userUnderTest))
-            }
-        });
-        //Assert value is selected
         browser.assert.containsText(login.userSelectedItem, userUnderTest);
-        //Click to expand select role dropdown
+        //Select role
         browser.isVisible(login.roleSelect, function (result) {
             if (result.status === constants.ELEMENT_FOUND) {
-                browser.click(login.roleSelect);
+                browser
+                    .click(login.roleSelect)
+                    .click(common.getSpecificSelectOptions(roleUnderTest));
             }
         });
-        //Select from expanded droprown
-        browser.isVisible(common.getSpecificSelectOptions(roleUnderTest), function (result) {
-            if (result.status === constants.ELEMENT_FOUND) {
-                browser.click(common.getSpecificSelectOptions(roleUnderTest));
-            }
-        });
-        //Assert value is selected
         browser.assert.containsText(login.roleSelectedItem, roleUnderTest);
-        //Click submit button
+        //Click Submit button
         browser.isVisible(common.submitButton, function (result) {
             if (result.status === constants.ELEMENT_FOUND) {
                 browser
@@ -65,40 +55,28 @@ module.exports = {
             .saveScreenshot(conf.imgpath(browser) + testScreenshot)
     },
     'Admin creates new task:': function (browser) {
-        let testTaskName = common.stringGenerator(tasks.nameFieldLimit);
-        let testDescription = common.stringGenerator(tasks.descriptionFieldLimit);
-        let testBillToClient = 'Yes';
-        let testHourlyRate = (Math.random() * tasks.hourlyRateFieldLimit).toFixed(2);
+        let taskName = common.stringGenerator(tasks.nameFieldLimit);
+        let description = common.stringGenerator(tasks.descriptionFieldLimit);
+        let billToClient = 'Yes';
+        let hourlyRate = common.numberGenerator(tasks.hourlyRateFieldLimit);
         // Click Tasks menu item
-        browser.isVisible(menu.tasksItem, function (result) {
-            if (result.status === constants.ELEMENT_FOUND) {
-                browser
-                    .click(menu.tasksItem)
-                    .waitForElementVisible(common.pageTitle);
-            }
-        });
+        browser
+            .click(menu.tasksItem)
+            .assert.containsText(menu.activeMenuItem, 'Tasks');
         // Click Create Task button
-        browser.isVisible(common.createButton, function (result) {
+        browser.isVisible(tasks.createTaskButton, function (result) {
             if (result.status === constants.ELEMENT_FOUND) {
-                browser
-                    .click(common.createButton)
-                    .waitForElementVisible(common.pageTitle);
+                browser.click(tasks.createTaskButton);
             }
         });
-        // Fill new task form
+        // Fill new Task form
         browser
-            .setValue(tasks.nameField, testTaskName)
-            .setValue(tasks.descriptionField, testDescription)
+            .setValue(tasks.nameField, taskName)
+            .setValue(tasks.descriptionField, description)
             .click(tasks.billToClientSelect)
-            .click(common.getSpecificSelectOptions(testBillToClient))
+            .click(common.getSpecificSelectOptions(billToClient))
             .clearValue(tasks.hourlyRateField)
-            .setValue(tasks.hourlyRateField, testHourlyRate);
-        // Assert values are correct
-        browser
-            .assert.value(tasks.nameField, testTaskName)
-            .assert.value(tasks.descriptionField, testDescription)
-            .assert.containsText(tasks.billToClientSelectedItem, testBillToClient)
-            .assert.value(tasks.hourlyRateField, testHourlyRate);
+            .setValue(tasks.hourlyRateField, hourlyRate);
         // Click Save button
         browser.isVisible(common.submitButton, function (result) {
             if (result.status === constants.ELEMENT_FOUND) {
@@ -107,22 +85,19 @@ module.exports = {
                     .waitForElementVisible(common.successMessage);
             }
         });
-        // Get back to Tasks list
-        browser.isVisible(menu.tasksItem, function (result) {
+        // Filter created Task
+        browser.click(menu.tasksItem);
+        browser.isVisible(tasks.searchNameField, function (result) {
             if (result.status === constants.ELEMENT_FOUND) {
                 browser
-                    .click(menu.tasksItem)
-                    .waitForElementVisible(common.pageTitle);
-            }
-        });
-        // Filter created Task
-        browser.isVisible(common.searchField, function (result) {
-            if (result.status === constants.ELEMENT_FOUND) {
-                browser.setValue(common.searchField, testTaskName);
+                    .setValue(tasks.searchNameField, taskName)
+                    .setValue(tasks.searchDescriptionField, description)
+                    .waitForElementVisible(tasks.foundNameField);
             }
         });
         browser
-            .waitForElementVisible((common.foundField).replace("?", testTaskName))
+            .assert.containsText(tasks.foundNameField, taskName)
+            .assert.containsText(tasks.foundDescriptionField, description)
             .end();
     }
 };
