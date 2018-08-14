@@ -11,6 +11,7 @@ module.exports = {
   "src_folders": [
     "test/e2e"// Where you are storing your Nightwatch e2e tests
   ],
+  "page_objects_path": "./obj",
   "output_folder": "./reports",
   "selenium": {
     "start_process": true,
@@ -29,7 +30,7 @@ module.exports = {
         "path": './screenshots'
       },
       "globals": {
-        "waitForConditionTimeout": 5000
+        "waitForConditionTimeout": 2500
       },
       "desiredCapabilities": {
         "browserName": "chrome",
