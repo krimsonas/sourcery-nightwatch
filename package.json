@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "nightwatch": "^0.9.9",
+    "npm": "^6.3.0",
     "selenium-download": "^2.0.7"
   },
   "devDependencies": {
