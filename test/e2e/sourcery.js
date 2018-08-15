@@ -9,6 +9,7 @@ module.exports = {
     'Login to sourcebooks POM': function (browser) {
         let userUnderTest = "Deividas Vaškevicius";
         let roleUnderTest = "Admin";
+        var date = new Date();
 
         browser
         .url(browser.launchUrl)
@@ -30,10 +31,7 @@ module.exports = {
         .assert.containsText(menuBar.invoicesItem, menuBar.invoices)
         .assert.containsText(menuBar.activeNavigationTab, menuBar.timeLogging)
         .assert.cssProperty(menuBar.activeNavigationTab, 'color', common.blueColor )
-
-        var d = new Date();
-        browser.waitForElementVisible(common.userInfoTitle);
-        browser.assert.containsText(timeLogging.selectedDay, d.getDate());
-        browser.end();
+        .assert.containsText(timeLogging.selectedDay, date.getDate())
+        .end();
     }
 };
