@@ -1,6 +1,5 @@
 var conf = require('../../nightwatch.conf.js');
 
-const c = require('../../libs/constants');
 const common = require('../../obj/common');
 const login = require('../../obj/login');
 const timeLogging = require('../../obj/timeLogging');
