@@ -1,10 +1,11 @@
 var conf = require('../../nightwatch.conf.js');
 
+const helper = require('../../obj/helpers');
 const common = require('../../obj/common');
 const login = require('../../obj/login');
 const timeLogging = require('../../obj/timeLogging');
 const menuBar = require('../../obj/menuBar');
-
+const tasks = require('../../obj/tasks');
 module.exports = {
     'Login to sourcebooks POM': function (browser) {
         let userUnderTest = "Deividas Vaškevicius";
@@ -32,6 +33,32 @@ module.exports = {
         .assert.containsText(menuBar.activeNavigationTab, menuBar.timeLogging)
         .assert.cssProperty(menuBar.activeNavigationTab, 'color', common.blueColor )
         .assert.containsText(timeLogging.selectedDay, date.getDate())
+        
+    },
+
+    'Admin creates new task': function (browser) {
+        let taskName = 'nightwatch test ' + helper.randomNumber();
+
+        browser
+        .url(browser.launchUrl + 'tasks')
+        .waitForElementVisible(common.pageTitle);
+
+        browser
+        .click(tasks.createTaskBtn)
+        .waitForElementVisible(common.userInfoTitle)
+        .setValue(tasks.nameField, taskName )
+        .setValue(tasks.descriptionField, 'nightwatch test desc')
+        .click(tasks.billDropdown)
+        .click(tasks.billYesOption)
+        .assert.containsText(tasks.billDropdown, 'Yes')
+        .setValue(tasks.rateField, '1') 
+        .click(tasks.saveTaskBtn)
+        .waitForElementVisible(common.userInfoTitle);
+            
+        browser.url(browser.launchUrl + 'tasks')
+        .waitForElementVisible(common.pageTitle)
+        .setValue(tasks.nameSearchField, taskName )
+        .waitForElementVisible(tasks.nameSearchResultField(taskName))
         .end();
     }
 };
