@@ -4,6 +4,7 @@ module.exports = {
     selectedItem: '[aria-label="?"]',
     successMessage: '.page-message--success',
     pageFooter: '.page__footer',
+    activeItemColor: 'rgba(64, 76, 237, 1)',
     stringGenerator: function (fieldLength) {
         return Math.random().toString(36).substr(2, fieldLength);
     },
