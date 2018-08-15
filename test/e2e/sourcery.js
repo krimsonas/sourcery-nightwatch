@@ -14,34 +14,14 @@ module.exports = {
         browser
         .url(browser.launchUrl)
         .waitForElementVisible(common.pageTitle)
-        .isVisible(login.userSelect, function(result) {
-            if(result.status === c.ELEMENT_FOUND) { 
-                browser.click(login.userSelect)
-            }
-        })
-        .isVisible(login.getSpecificSelectUserOption(userUnderTest), function(result) {
-            if(result.status === c.ELEMENT_FOUND) { 
-                browser.click(login.getSpecificSelectUserOption(userUnderTest))
-            }
-        })
-        .isVisible(login.roleSelect, function(result) {
-            if(result.status === c.ELEMENT_FOUND) { 
-                browser.click(login.roleSelect);
-            }
-        })
-        .isVisible(login.getSpecificSelectUserOption(roleUnderTest), function(result) {
-            if(result.status === c.ELEMENT_FOUND) { 
-                browser.click(login.getSpecificSelectUserOption(roleUnderTest));
-            }
-        })
+        
+        .click(login.userSelect)
+        .click(login.getSpecificSelectUserOption(userUnderTest))
+        .click(login.roleSelect)
+        .click(login.getSpecificSelectUserOption(roleUnderTest)) 
         .assert.containsText(login.userSelectedValue, userUnderTest)
-        .isVisible(common.submitButton, function(result) {
-            if(result.status === c.ELEMENT_FOUND) {
-                browser
-                .click(common.submitButton)
-                .waitForElementVisible(timeLogging.loggedInUsersName);
-            }
-        })
+        .click(common.submitButton)
+        .waitForElementVisible(timeLogging.loggedInUsersName)
         .assert.containsText(timeLogging.loggedInUsersName, userUnderTest)
         .assert.containsText(menuBar.timeLoggingItem, menuBar.timeLogging)
         .assert.containsText(menuBar.projectsItem, menuBar.projects)
