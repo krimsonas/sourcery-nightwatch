@@ -3,4 +3,3 @@ module.exports = {
     loggedInUsersName : '.user-info__title',
     selectedDay : '.calendar--selected'
 }
-
