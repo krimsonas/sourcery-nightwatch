@@ -37,7 +37,7 @@ module.exports = {
     },
 
     'Admin creates new task': function (browser) {
-        let taskName = 'nightwatch test ' + helper.randNumber();
+        let taskName = 'nightwatch test ' + helper.randomNumber();
 
         browser
         .url(browser.launchUrl + 'tasks')
