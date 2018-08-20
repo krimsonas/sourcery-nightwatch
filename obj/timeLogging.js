@@ -1,4 +1,6 @@
 module.exports = {
-    currentDate : ".calendar--today",
-    selectedDate: ".calendar--selected"
+    elements: {
+        currentDate: ".calendar--today",
+        selectedDate: ".calendar--selected"
+    }
 }
