@@ -12,7 +12,7 @@ module.exports = {
         let todayDate = new Date();
         let testDate = todayDate.getDate();
         let testTaskName = common.stringGenerator(10);
-        let testDescription = "Description";
+        let testDescription = common.stringGenerator(50);
         let testBillToClient = "Yes";
         let testHourlyRate = 8.5;
 
