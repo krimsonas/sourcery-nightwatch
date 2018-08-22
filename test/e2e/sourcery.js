@@ -9,6 +9,7 @@ module.exports = {
 
         let currentUser = "Demo User";
         let currentUserRole = "Admin";
+        let menuItems = ['Time Logging','Invoices','Tasks','Projects','Clients','Time Entries'];
         browser
         .url(browser.launchUrl)
         .waitForElementVisible(common.pageTitle); // wait for the Login title
@@ -50,9 +51,24 @@ module.exports = {
                 .waitForElementVisible(timeLogging.loggedInUsersName);
             }
         });
-        //Assert if expected user is logged in
-        browser.assert.containsText(timeLogging.loggedInUsersName, currentUser)
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+
+         //Assert if expected user is logged in
+         browser.assert.containsText(timeLogging.loggedInUsersName, currentUser)
+                .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
+
+        //assert main nav elements are displayed
+        browser.assert.containsText(common.menuList, menuItems[0])
+                .assert.containsText(common.menuList, menuItems[1])
+                .assert.containsText(common.menuList, menuItems[2])
+                .assert.containsText(common.menuList, menuItems[3])
+                .assert.containsText(common.menuList, menuItems[4])
+                .assert.containsText(common.menuList, menuItems[5])
+        //assert menu item "time logging" is selected and marked in blue
+                .assert.containsText(common.menuListActiveElement, menuItems[0])
+                .assert.cssProperty(common.menuListActiveElement,'color','rgba(64, 76, 237, 1)') //color blue
+                .end();
+
+
+            
     }
 };
