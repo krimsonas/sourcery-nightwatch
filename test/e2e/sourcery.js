@@ -9,11 +9,6 @@ module.exports = {
 
         let currentUser = "Demo User";
         let currentUserRole = "Admin";
-        //---------------------------------------------------------------------------------------------------
-        //click into User field
-        //find your user and select it
-        //=>assert
-        //---------------------------------------------------------------------------------------------------
         browser
         .url(browser.launchUrl)
         .waitForElementVisible(common.pageTitle); // wait for the Login title
@@ -31,11 +26,7 @@ module.exports = {
         });
         //Assert value is selected
         browser.assert.containsText(login.userSelectedValue, currentUser);
-        //---------------------------------------------------------------------------------------------------
-        //click into role field
-        //find your role and select it
-        //=>assert
-        //---------------------------------------------------------------------------------------------------
+
         //Click to expand select role dropdown
         browser.element('css selector', login.userRoleSelectField, function(result) {
             if(result.status === c.ELEMENT_FOUND) { 
@@ -50,11 +41,7 @@ module.exports = {
         });
         //Assert value is selected
         browser.assert.containsText(login.userRoleSelectField, currentUserRole);
-        //---------------------------------------------------------------------------------------------------
-        //find login button and click it
-        //user name is in time logging page
-        //=>assert
-        //---------------------------------------------------------------------------------------------------
+
         //Click submit button
         browser.element('css selector', common.submitButton, function(result) {
             if(result.status === c.ELEMENT_FOUND) {
