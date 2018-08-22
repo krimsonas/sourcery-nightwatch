@@ -1,49 +1,62 @@
 var conf = require('../../nightwatch.conf.js');
+const c = require('../../libs/constants');
+const common = require('../../obj/common');
+const login = require('../../obj/login');
+const timeLogging = require('../../obj/timeLogging');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
+        let userUnderTest = "Giedrius Saulenas";
+        let roleUnderTest = "Admin";
         browser
+        
         .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
+        .waitForElementVisible(common.pageTitle) // wait for the Login title
         //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
+        .isVisible(login.userSelect, function(result) {
+            if(result.status === c.ELEMENT_FOUND){
+                browser.click(login.userSelect)
             }
-        });
+        })
+
         //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+        .isVisible(login.getSpecificSelectUserOption(userUnderTest), function(result) {
+            if (result.status === c.ELEMENT_FOUND){
+                browser.click(login.getSpecificSelectUserOption(userUnderTest))
             }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
+        })
+
+        //Checks if user that we want to select is selected from the list
+        .assert.containsText(login.userSelectedValue, userUnderTest)
+
         //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
+        .isVisible(login.roleSelect, function(result) {
+            if(result.status === c.ELEMENT_FOUND){
+                browser.click(login.roleSelect)
             }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
+        })
+    
+        //Select from expanded dropdown
+        .isVisible(login.getSpecificSelectRoleOption(roleUnderTest), function(result) {
+            if (result.status === c.ELEMENT_FOUND){
+                browser.click(login.getSpecificSelectRoleOption(roleUnderTest))
             }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
+        })
+
+        //Checks if role that we want to select is selected from the list
+        .assert.containsText(login.roleSelectedValue, roleUnderTest)
+       
         //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
+        .isVisible(common.submitButton, function(result) {
+            if (result.status === c.ELEMENT_FOUND){
                 browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .click(common.submitButton)
+                .waitForElementVisible(timeLogging.loggedInUsersName)
             }
-        });
+        })
+        
         //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        .assert.containsText(timeLogging.loggedInUsersName, userUnderTest)
+        .end();
     }
 };
