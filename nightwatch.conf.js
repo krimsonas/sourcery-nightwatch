@@ -9,7 +9,7 @@ const credentials = require("./libs/credentials");
 
 module.exports = {
   "src_folders": [
-    "test/e2e"// Where you are storing your Nightwatch e2e tests
+    "test/test"// Where you are storing your Nightwatch e2e tests
   ],
   "output_folder": "./reports",
   "selenium": {
