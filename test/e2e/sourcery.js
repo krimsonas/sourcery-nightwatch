@@ -41,18 +41,19 @@ module.exports = {
                 .waitForElementVisible('.user-info__title');
             }
         });
-        //browser.waitForElementVisible('.calendar--today')
-        //.assert.containsText('.calendar--today', '7' )
         //Assert if expected user is logged in
         browser.assert.containsText('.user-info__title', 'Gabija Graženaite');
+        //Assert if there are displayed these buttons in above menu list:
         browser.assert.containsText('.main-nav', 'Time Logging');
         browser.assert.containsText('.main-nav', 'Invoices');
         browser.assert.containsText('.main-nav', 'Tasks');
         browser.assert.containsText('.main-nav', 'Projects');
         browser.assert.containsText('.main-nav', 'Clients');
-        browser.assert.containsText('.main-nav', 'Time Entries')
-        //browser.assert.containsText('.main-nav', 'Time Logging','Invoices','Tasks','Projects','Clients','Time entries')
-        .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
+        browser.assert.containsText('.main-nav', 'Time Entries');
+        //Time logging menu item is selected and marked in blue color
+        browser.assert.containsText('.main-nav__link--active', 'Time Logging');
+        browser.expect.element('.main-nav__link--active').to.have.css('color').which.equals('rgba(64, 76, 237, 1)');
+        browser.saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
     }
 };
