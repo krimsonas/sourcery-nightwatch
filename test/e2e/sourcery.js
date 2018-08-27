@@ -2,7 +2,6 @@ var conf = require('../../nightwatch.conf.js');
 const c = require('../../libs/constants.js')
 const common = require('../../obj/common.js');
 const login = require('../../obj/login.js');
-const timeLogging = require('../../obj/timeLogging.js');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
@@ -48,12 +47,12 @@ module.exports = {
             if(result.status === c.ELEMENT_FOUND) {
                 browser
                 .click('css selector', common.submitButton)
-                .waitForElementVisible(timeLogging.loggedInUsersName);
+                .waitForElementVisible(common.loggedInUsersName);
             }
         });
 
          //Assert if expected user is logged in
-         browser.assert.containsText(timeLogging.loggedInUsersName, currentUser)
+         browser.assert.containsText(common.loggedInUsersName, currentUser)
                 .saveScreenshot(conf.imgpath(browser) + 'Demo.png');
 
         //assert main nav elements are displayed
