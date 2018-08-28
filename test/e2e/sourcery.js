@@ -1,49 +1,118 @@
-var conf = require('../../nightwatch.conf.js');
+const c = require('../../libs/constants');
+const common = require('../../obj/common');
+const login = require('../../obj/login');
+const timeLogging = require('../../obj/timeLogging');
+const tasks = require('../../obj/tasks');
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
+        let userUnderTest = "Lukas Klimišinas";
+        let userRole = "Admin";
+
         browser
-        .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
-            }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
-            }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
-        //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
-            }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
-            }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
-        //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
-                browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
-            }
-        });
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
+            .url(browser.launchUrl)
+            .waitForElementVisible(common.pageTitle)
+            .isVisible(login.userSelect, function (result) {
+                if (result.status === c.ELEMENT_FOUND) {
+                    browser.click(login.userSelect)
+                }
+            })
+            .isVisible(login.getSpecificSelectUserOption(userUnderTest), function (result) {
+                if (result.status === c.ELEMENT_FOUND) {
+                    browser.click(login.getSpecificSelectUserOption(userUnderTest))
+                }
+            })
+            .assert.containsText(login.userSelectedValue, userUnderTest)
+            .isVisible(login.userRoleSelect, function (result) {
+                if (result.status === c.ELEMENT_FOUND) {
+                    browser.click(login.userRoleSelect)
+                }
+            })
+            .isVisible(login.getSpecificSelectUserRoleOption(userRole), function (result) {
+                if (result.status === c.ELEMENT_FOUND) {
+                    browser.click(login.getSpecificSelectUserRoleOption(userRole))
+                }
+            })
+            .assert.containsText(login.userRoleSelect, userRole)
+            .isVisible(common.submitButton, function (result) {
+                if (result.status === c.ELEMENT_FOUND) {
+                    browser
+                        .click(common.submitButton)
+                        .waitForElementVisible(timeLogging.loggedInUsersName);
+                }
+            })
+            .assert.containsText(timeLogging.loggedInUsersName, userUnderTest)
+            .waitForElementVisible(timeLogging.navbar)
+            .assert.containsText(timeLogging.navbar, timeLogging.navbarLinks)
+            .assert.containsText(timeLogging.navbarSelected, timeLogging.navbarSelectedValue)
+            .assert.cssProperty(timeLogging.navbarSelected, timeLogging.activeProperty, timeLogging.navbarActiveValue);
+    },
+
+    'Admin creates new task': function (browser) {
+        let ran = Math.random() * 100;
+        let ran1 = Math.random();
+        let taskName = ran * ran1;
+        let rate = 55;
+
+        browser
+            .url(browser.launchUrl + tasks.url)
+            .waitForElementVisible(common.pageTitle)
+            .isVisible(common.clickButton, function (result) {
+                if (result.status === c.ELEMENT_FOUND) {
+                    browser.click(common.clickButton)
+                }
+            })
+            .waitForElementVisible(common.pageTitle)
+            .assert.containsText(common.pageTitle, tasks.title)
+            .waitForElementVisible(tasks.taskNameField)
+            .setValue(tasks.taskNameField, taskName)
+            .waitForElementVisible(tasks.taskDesciptionField)
+            .setValue(tasks.taskDesciptionField, tasks.description)
+            .isVisible(tasks.billableField, function (result) {
+                if (result.status === c.ELEMENT_FOUND) {
+                    browser.click(tasks.billableField)
+                }
+            })
+            .isVisible(tasks.billableValue, function (result) {
+                if (result.status === c.ELEMENT_FOUND) {
+                    browser.click(tasks.billableValue)
+                }
+            })
+            .waitForElementVisible(tasks.hourlyRateField)
+            .clearValue(tasks.hourlyRateField)
+            .setValue(tasks.hourlyRateField, rate)
+            .isVisible(common.submitButton, function(result){
+                if(result.status === c.ELEMENT_FOUND){
+                    browser.click(common.submitButton)
+                }
+            })
+            .waitForElementVisible(tasks.successMessage)
+            .url(function (result){
+                browser.assert.notStrictEqual(result.value, tasks.createUrl);
+            });
+    },
+
+    'admin logs time': function (browser) {
+        browser
+            .url(browser.launchUrl)
+            .waitForElementVisible(common.pageTitle)
+            .waitForElementVisible(timeLogging.todaysDate)
+            .click(timeLogging.todaysDate)
+            .waitForElementVisible(timeLogging.projectsField)
+            .click(timeLogging.projectsField)
+            .click(timeLogging.selectProject)
+            .click(timeLogging.tasksField)
+            .click(timeLogging.selectTask)
+            .setValue(timeLogging.descriptionField, timeLogging.description)
+            .setValue(timeLogging.hoursField, timeLogging.hours)
+            .click(common.submitButton)
+            .waitForElementVisible(timeLogging.success);
+    },
+
+    'admin checks entered time entry' : function (browser){
+        browser
+            .url(browser.launchUrl + "/time-entries")
+            .waitForElementVisible(common.pageTitle)
             .end();
     }
 };
