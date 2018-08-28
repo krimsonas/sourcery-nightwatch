@@ -1,6 +1,7 @@
 module.exports = {
     //DOM elements
     pageTitle : ".page__title",
-    submitButton : '[type="submit"]'
+    submitButton : '[type="submit"]',
+    clickButton : '[type="button"]'
 }
 
