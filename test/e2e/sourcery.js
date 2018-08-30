@@ -1,49 +1,86 @@
 var conf = require('../../nightwatch.conf.js');
+const c = require('../../libs/constants.js');
+const dom = require('../../obj/dom.js');
+const user = "Taura  Frezdorfaite";
+const role = "Admin";
+let taskName = "Task Name TEST";
+const taskDescription = "Task description TEST TEST E2E TEST";
+const isBillable = "Yes";
+const hourlyRateUsb = 123;
 
 module.exports = {
-    'Login to sourcebooks': function (browser) {
-        browser
-        .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
+    'Homework task' : function (browser) {
+
+        taskName += Math.random().toString();
+        // Login
+        browser.url(browser.launchUrl).waitForElementVisible(dom.pageTitle);
+        browser.element(dom.selector, dom.userDropdownSelect, function(result) {
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(dom.userDropdownSelect)
             }
         });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+
+        browser.element(dom.selector, dom.getSpecificSelectOptions(user), function(result) {
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(dom.getSpecificSelectOptions(user))
             }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
-        //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
+        })
+
+        browser.element(dom.selector, dom.roleDropdownSelect, function (result) {
+            if (result.status === c.ELEMENT_FOUND) {
+                browser.click(dom.roleDropdownSelect);
             }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
+        })
+
+        browser.element(dom.selector, dom.getSpecificSelectOptions(role), function (result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser.click(dom.getSpecificSelectOptions(role));
             }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
-        //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
+        })
+
+        browser.element(dom.selector, dom.submitButton, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser.click(dom.submitButton)
+                .waitForElementVisible(dom.tasks);
+            }
+        })
+
+        // Create task
+        browser.element(dom.selector, dom.tasks, function(result) {
+            if (result.status === c.ELEMENT_FOUND) {
+                browser.click(dom.tasks);
+            }
+        }).assert.containsText(dom.isActive, 'Tasks')
+
+        browser.element(dom.selector, dom.createButton, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser.click(dom.createButton);
+            }
+        })
+
+        .setValue(dom.taskName, taskName)
+        .setValue(dom.taskDescription, taskDescription)
+        .click(dom.billToClient)
+        .click(dom.getSpecificSelectOptions(isBillable))
+        .clearValue(dom.hourlyRate)
+        .setValue(dom.hourlyRate, hourlyRateUsb)
+
+        
+        browser.element(dom.selector, dom.submitButton, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser.click(dom.submitButton);
+            }
+        })
+
+        browser.element(dom.selector, dom.tasks, function(result) {
+            if (result.status === c.ELEMENT_FOUND) {
                 browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .click(dom.tasks)
+                .setValue(dom.taskNameSearch, taskName)
+                .pause(2345);
             }
-        });
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        })  
+        .assert.containsText(dom.taskNameResult, taskName)
+        .end();
     }
-};
+}
