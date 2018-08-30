@@ -76,7 +76,6 @@ module.exports = {
                 .setValue(taskLogging.taskName, randomValue)
             }
         })
-        .assert.containsText(taskLogging.taskName, randomValue)
         //Fill field "Description"
         .isVisible(taskLogging.taskDescription, function(result) {
             if(result.status === c.ELEMENT_FOUND) {
@@ -85,7 +84,6 @@ module.exports = {
                 .setValue(taskLogging.taskDescription, randomValue)
             }
         })
-        .assert.containsText(taskLogging.taskDescription, randomValue)
         //Click to expand select user dropdown "Bill to Client"
         .isVisible(taskLogging.billToClient, function(result) {
             if(result.status === c.ELEMENT_FOUND) { 
@@ -99,7 +97,6 @@ module.exports = {
                 .click(taskLogging.getSpecificSelectBillOption(selectRateOption))
             }
         })
-        .assert.containsText(taskLogging.billToClient, selectRateOption)
         //Fill field "Hourly Rate"
         .isVisible(taskLogging.taskHourlyRate, function(result) {
             if(result.status === c.ELEMENT_FOUND) {
@@ -108,7 +105,6 @@ module.exports = {
                 .setValue(taskLogging.taskHourlyRate, hourlyRate);
             }
         })
-        .assert.containsText(taskLogging.taskHourlyRate, hourlyRate)
         //Click Save button
         .isVisible(common.submitButton, function(result) {
             if(result.status === c.ELEMENT_FOUND) {
