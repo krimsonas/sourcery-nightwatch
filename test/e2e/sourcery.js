@@ -1,49 +1,134 @@
-var conf = require('../../nightwatch.conf.js');
+const c = require('../../libs/constants');
+const common= require('../../obj/common');
+const login = require('../../obj/login');
+const taskLogging = require('../../obj/taskLogging');
+const timeLogging = require('../../obj/timeLogging');
+var randomString = require('random-string');
+var randomValue = randomString();
 
 module.exports = {
     'Login to sourcebooks': function (browser) {
+        let userUnderTest = "Ruta Laurikaityte";
+        let roleUnderTest = "Admin";
+        let menuItemTest = "Tasks";
+        let selectRateOption = "Yes";
+        let hourlyRate = '2'
+
         browser
         .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
+        .waitForElementVisible(common.pageTitle)
+        //Choose User
+        .isVisible(login.userSelect, function(result) {
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(login.userSelect)
             }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
+        })
+        .isVisible(login.getSpecificSelectUserOption(userUnderTest), function(result) {
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(login.getSpecificSelectUserOption(userUnderTest))
             }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
-        //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
+        })
+        .assert.containsText(login.userSelectedValue, userUnderTest)
+        //Choose Role
+        .isVisible(login.roleSelectedValue, function(result) {
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(login.roleSelectedValue)
             }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
+        })
+        .isVisible(login.getSpecificSelectUserOption(roleUnderTest), function(result) {
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(login.getSpecificSelectUserOption(roleUnderTest))
             }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
-        //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
+        })
+        .assert.containsText(login.roleSelectedValue, roleUnderTest)
+
+        .isVisible(common.submitButton, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
                 browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .click(common.submitButton)
+                .waitForElementVisible(timeLogging.loggedInUsersName)
             }
-        });
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        })
+        .assert.containsText(timeLogging.loggedInUsersName, userUnderTest)
+        //Navigate to Tasks section
+        .isVisible(taskLogging.menuItem, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(taskLogging.menuItem)
+                .waitForElementVisible(taskLogging.activeMenuItem)
+            }
+        })
+        .assert.containsText(taskLogging.activeMenuItem, menuItemTest)
+        //Click button "Create Task"
+        .isVisible(common.createItemButton, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(common.createItemButton)
+                .waitForElementVisible(common.pageTitle)
+            }
+        })
+        .assert.containsText(common.pageTitle, taskLogging.formTitle)
+        //Fill field "Task Name"
+        .isVisible(taskLogging.taskName, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(taskLogging.taskName)
+                .setValue(taskLogging.taskName, randomValue)
+            }
+        })
+        //Fill field "Description"
+        .isVisible(taskLogging.taskDescription, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(taskLogging.taskDescription)
+                .setValue(taskLogging.taskDescription, randomValue)
+            }
+        })
+        //Click to expand select user dropdown "Bill to Client"
+        .isVisible(taskLogging.billToClient, function(result) {
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(taskLogging.billToClient)
+            }
+        })
+        //Select from expanded droprown value YES
+        .isVisible(taskLogging.getSpecificSelectBillOption(selectRateOption), function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(taskLogging.getSpecificSelectBillOption(selectRateOption))
+            }
+        })
+        //Fill field "Hourly Rate"
+        .isVisible(taskLogging.taskHourlyRate, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(taskLogging.taskHourlyRate)
+                .setValue(taskLogging.taskHourlyRate, hourlyRate);
+            }
+        })
+        //Click Save button
+        .isVisible(common.submitButton, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(common.submitButton)
+            }
+        })
+        //Navigate to Tasks section
+        .isVisible(taskLogging.menuItem, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(taskLogging.menuItem)
+                .waitForElementVisible(taskLogging.activeMenuItem)
+            }
+        })
+        //Check if new task is created
+        .isVisible(taskLogging.filterFieldValue, function(result) {
+            if(result.status === c.ELEMENT_FOUND) {
+                browser
+                .click(taskLogging.filterFieldValue)
+                .setValue(taskLogging.filterFieldValue, randomValue)
+                .assert.containsText(taskLogging.elementValue, randomValue)
+            }
+        })
+        .end();
     }
 };
