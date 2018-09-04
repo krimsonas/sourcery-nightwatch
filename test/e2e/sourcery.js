@@ -1,49 +1,65 @@
 var conf = require('../../nightwatch.conf.js');
+const dom = require('../../obj/dom.js');
+const credentials = require("../../libs/credentials.js");
+const c = require('../../libs/constants.js');
+const selectorCSS = "css selector";
+const selectorXpath = "xpath";
+let n = 0;
+let email = 'Email';
+let password = 'Password';
+
+
 
 module.exports = {
-    'Login to sourcebooks': function (browser) {
+    'Login to lunchapp': function (browser) {
+        browser.url(browser.launchUrl)
+        .waitForElementVisible(dom.getSpecificSelectOptions(email))
+        .setValue(dom.getSpecificSelectOptions(email), credentials.user);
+
+        browser.assert.containsText(dom.getSpecificSelectOptions(email), credentials.user);
+
+        browser.element(selectorCSS, dom.getSpecificSelectOptions(email), function(result)
+        {   
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.setValue(dom.getSpecificSelectOptions(password), credentials.password);
+            }
+        })
+        browser.assert.containsText(dom.getSpecificSelectOptions(password), credentials.password); 
+
+        browser.element(selectorCSS, dom.loginButton, function(result)
+        {   
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(dom.loginButton);
+            }
+        }).waitForElementVisible(selectorXpath, dom.loggedInUserName);
+
+        browser.assert.containsText(dom.loggedInUserName, credentials.user);
+
         browser
-        .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
-            }
+        .element(selectorCSS, dom.selectedDay)
+        .element(selectorCSS, dom.firstSupplier, function(result){   
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(dom.firstSupplier)
+            } 
         });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
-            }
+
+        var selectedSupplier = browser.getText(selectorCSS, dom.firstSupplier);
+        browser.assert.containsText(dom.supplierName, selectedSupplier);
+
+        browser.elements(selectorCSS, dom.meal, function (result) {
+            var n = result.value.length;
+            if (n > 0) {
+                let index = Math.floor(Math.random()*n);
+                browser.click(result.value[n]);
+             }
         });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
-        //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
+
+        browser.element(selectorCSS, dom.orderButton, function(result)
+        {   
+            if(result.status === c.ELEMENT_FOUND) { 
+                browser.click(dom.orderButton);
             }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
-            }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
-        //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
-                browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
-            }
-        });
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        }).waitForElementVisible(selectorCSS, dom.successMessage) 
+         .end();
     }
 };
