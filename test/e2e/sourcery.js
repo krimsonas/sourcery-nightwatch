@@ -60,7 +60,6 @@ module.exports = {
                 browser.click(dom.orderButton);
             }
         }).waitForElementVisible(selectorCSS, dom.successMessage) 
-         .pause(3000)
          .end();
     }
 };
