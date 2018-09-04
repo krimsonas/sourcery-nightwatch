@@ -24,8 +24,7 @@ module.exports = {
   },
   "test_settings": {
     "default": {
-      "launch_url" : 'https://lunchapp.azurewebsites.net/login-password',
-      
+      "launch_url" : 'https://lunchapp.azurewebsites.net/login-password/',
       "screenshots": {
         "enabled": true,
         "path": './screenshots'
