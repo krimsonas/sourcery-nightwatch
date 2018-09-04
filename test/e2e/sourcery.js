@@ -2,21 +2,30 @@ const nightwatchconf = '../../nightwatch.conf.js';
 const user = 'Admin';
 const common= require('../../libs/obj/common.js');
 var today = new Date();
+const credentials = require('../../libs/credentials.js');
+
 
 var conf = require(nightwatchconf);
 
 module.exports = {
     'Login to lunchapp': function (browser) {
+
+        // login window
         browser
         .url(browser.launchUrl).useXpath()
         .waitForElementVisible('//input[@name="email"]')     
-        .setValue('//input[@name="email"]', 'mortsmann1p@devbridge.com').waitForElementVisible('//input[@name="password"]')
-        .setValue('//input[@name="password"]', 'gf667zP')
+        .setValue('//input[@name="email"]', credentials.user).waitForElementVisible('//input[@name="password"]')
+        .setValue('//input[@name="password"]', credentials.password)
         .useCss()
         .waitForElementVisible('.btn__content')
         .click('css selector', '.btn__content');
 
+        // main window
 
+        browser
+        .waitForElementVisible(".toolbar__content").assert.containsText('.subheader', credentials.user)
+        .useXpath()
+        .click("//span[contains(text(), 'testuojamasis')]");
 
 /*        
         browser.element('css selector', '#react-select-2--value', function(result) {
