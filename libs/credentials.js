@@ -1,4 +1,4 @@
 module.exports = {
-	"user":"sourcerer",
-	"password":"SourceryTesters2018"
+	"user":"mortsmann1p@devbridge.com",
+	"password":"gf667zP"
 }

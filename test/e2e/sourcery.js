@@ -6,16 +6,27 @@ var today = new Date();
 var conf = require(nightwatchconf);
 
 module.exports = {
-    'Login to sourcebooks': function (browser) {
+    'Login to lunchapp': function (browser) {
         browser
-        .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        //Click to expand select user dropdown
+        .url(browser.launchUrl).useXpath()
+        .waitForElementVisible('//input[@name="email"]')     
+        .setValue('//input[@name="email"]', 'mortsmann1p@devbridge.com').waitForElementVisible('//input[@name="password"]')
+        .setValue('//input[@name="password"]', 'gf667zP')
+        .useCss()
+        .waitForElementVisible('.btn__content')
+        .click('css selector', '.btn__content');
+
+
+
+/*        
         browser.element('css selector', '#react-select-2--value', function(result) {
             if(result.status != -1) { 
                 browser.click('#react-select-2--value');
             }
         });
+*/
+
+        /*
         //Select from expanded droprown
         browser.element('css selector', '[aria-label="Demo User"]', function(result) {
             if(result.status != -1) { 
@@ -62,5 +73,7 @@ module.exports = {
         //Assert 
             .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
             .end();
+
+            */
     }
 };
