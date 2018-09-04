@@ -25,7 +25,14 @@ module.exports = {
         browser
         .waitForElementVisible(".toolbar__content").assert.containsText('.subheader', credentials.user)
         .useXpath()
-        .click("//span[contains(text(), 'testuojamasis')]");
+        .click("//div[@class='list__tile__title']//span[contains(text(), 'Wednesday')]")
+        .click("//span[contains(text(), 'Chop Chop')]")
+        .click("(//div[@class='card__text'])[1]")
+        .click("(//div[@class='card__text'])[5]")
+        .click('//button[@class="orders-list-button btn btn--round secondary"]//div')
+        .click("//span[contains(text(), 'Orders History')]")
+        .waitForElementVisible("//h3[@class='headline']")
+
 
 /*        
         browser.element('css selector', '#react-select-2--value', function(result) {
