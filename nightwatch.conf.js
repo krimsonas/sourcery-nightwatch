@@ -23,7 +23,7 @@ module.exports = {
   },
   "test_settings": {
     "default": {
-      "launch_url" : "https://"+credentials.user+":"+credentials.password+"@dq508exvr03rj.cloudfront.net/",
+      "launch_url" : "https://lunchapp.azurewebsites.net/login-password",
       "screenshots": {
         "enabled": true,
         "path": './screenshots'
