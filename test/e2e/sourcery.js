@@ -1,49 +1,59 @@
 var conf = require('../../nightwatch.conf.js');
+const login = require('../../login/login');
+const c = require('../../libs/constants.js');
+const com = require('../../obj/common');
+
+/* Code was not launched, because Launch App login was unavailable
+*  Test is not tested and it probably doesn't work :(
+*  Test had to check if total amount
+*  from different users in "User Expenses" menu option is calculated correctly    
+*/
 
 module.exports = {
-    'Login to sourcebooks': function (browser) {
+    'Testing Lunch App': function (browser) {
+        // User credentials
+        let email = 'sfattorini1w@devbridge.com';
+        let password = 'kYIIlysp';
+
         browser
         .url(browser.launchUrl)
-        .waitForElementVisible('h1'); // wait for the Login title
-        //Click to expand select user dropdown
-        browser.element('css selector', '#react-select-2--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('#react-select-2--value');
-            }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Demo User"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Demo User"]');
-            }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-2--value-item', 'Demo User');
-        //Click to expand select role dropdown
-        browser.element('css selector', '#react-select-3--value', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '#react-select-3--value');
-            }
-        });
-        //Select from expanded droprown
-        browser.element('css selector', '[aria-label="Admin"]', function(result) {
-            if(result.status != -1) { 
-                browser.click('css selector', '[aria-label="Admin"]');
-            }
-        });
-        //Assert value is selected
-        browser.assert.containsText('#react-select-3--value-item', 'Admin');
-        //Click submit button
-        browser.element('css selector', '[type="submit"]', function(result) {
-            if(result.status != -1) {
+
+        // Waiting for login page to become visible
+        .waitForElementVisible(login.isItLoaded)
+        
+        // Enter email
+        .useXpath()
+        .waitForElementVisible(login.emailInput)
+        .click(login.emailInput)
+        .setValue(login.emailInput, email)
+      
+        // Enter password
+        .useXpath()
+        .waitForElementVisible(login.passwordlInput)
+        .click(login.passwordInput)
+        .setValue(login.passwordInput, password)
+
+        // Click on Login button
+        .useCss()
+        browser.element(login.loginBtn, function(result){
+            if (result === c.ELEMENT_FOUND){
                 browser
-                .click('css selector', '[type="submit"]')
-                .waitForElementVisible('.user-info__title');
+                .click(login.loginBtn)
             }
-        });
-        //Assert if expected user is logged in
-        browser.assert.containsText('.user-info__title', 'Demo User')
-            .saveScreenshot(conf.imgpath(browser) + 'Demo.png')
-            .end();
+        })
+
+        // Wait for page to be loaded
+        .useCss()
+        .waitForElementVisible(common.isItLogged)
+
+        // Navigate to User Expenses
+        .useXpath()
+        browser.element(com.userExp, function(result){
+            if (result === c.ELEMENT_FOUND){
+                browser
+                .click(com.userExp)
+            }
+        })
+        .end();
     }
 };
