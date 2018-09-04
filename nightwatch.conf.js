@@ -5,7 +5,7 @@ const utils = require("./libs/utils");
 
 utils.generateStub();
 
-const credentials = require("./libs/credentials");
+//const credentials = require("./libs/credentials");
 
 module.exports = {
   "src_folders": [
@@ -17,13 +17,15 @@ module.exports = {
     "server_path": seleniumServer.path,
     "host": "127.0.0.1",
     "port": 4444,
+    "use_ssl" : true,
     "cli_args": {
       "webdriver.chrome.driver" : chromedriver.path
     }
   },
   "test_settings": {
     "default": {
-      "launch_url" : "https://lunchapp.azurewebsites.net/login-password",
+      "launch_url" : 'https://lunchapp.azurewebsites.net/login-password',
+      
       "screenshots": {
         "enabled": true,
         "path": './screenshots'
